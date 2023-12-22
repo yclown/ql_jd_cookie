@@ -107,6 +107,11 @@ namespace JD_Get
             return this.Token;
         }
 
+        /// <summary>
+        /// 查找对应的环境变量
+        /// </summary>
+        /// <param name="searchValue"></param>
+        /// <returns></returns>
         public string GetEnvs(string searchValue)
         {
             string code = "";
@@ -119,6 +124,12 @@ namespace JD_Get
             }
             return jsonObj["data"][0]["id"].ToString();
         }  
+        /// <summary>
+        /// 更新环境变量
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public string UpdateEnvs(string id,string value)
         {
             string code = "";
@@ -136,6 +147,12 @@ namespace JD_Get
             //this.Token = jsonObj["code"]["token_type"].ToString() + " " + jsonObj["data"]["token"].ToString();
             return jsonObj["code"].ToString();
         }
+        /// <summary>
+        /// 添加环境变量
+        /// </summary>
+        /// <param name="remarks"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public string AddEnvs(string remarks, string value)
         {
             string code = ""; 
@@ -158,12 +175,16 @@ namespace JD_Get
             return jsonObj["code"].ToString();
         }
 
-
-        public string EnableEnvs(List<string> id)
+        /// <summary>
+        /// 启用环境变量
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public string EnableEnvs(List<string> ids)
         {
             string code = "";
 
-            string postdata= JsonConvert.SerializeObject(id);
+            string postdata= JsonConvert.SerializeObject(ids);
             var responseData = PutResponse($"/open/envs/enable", postdata,
                 out code);
             JObject jsonObj = JObject.Parse(responseData); 
