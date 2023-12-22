@@ -24,10 +24,7 @@ namespace JD_Get
         public Form1()
         {
             InitializeComponent();
-            Control.CheckForIllegalCrossThreadCalls = false;
-            Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-
-
+            Control.CheckForIllegalCrossThreadCalls = false; 
             ql = new QLHelp(
                 ConfigHelp.GetConfig("QL_URL"),
                 ConfigHelp.GetConfig("QL_ClientID") ,
