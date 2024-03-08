@@ -1,5 +1,6 @@
 ﻿using CefSharp;
 using CefSharp.DevTools.Network;
+using CefSharp.WinForms;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,10 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 
 namespace JD_Get
@@ -24,31 +27,38 @@ namespace JD_Get
         public Form1()
         {
             InitializeComponent();
-            Control.CheckForIllegalCrossThreadCalls = false; 
-            ql = new QLHelp(
-                ConfigHelp.GetConfig("QL_URL"),
-                ConfigHelp.GetConfig("QL_ClientID") ,
-                ConfigHelp.GetConfig("QL_ClientSecret")
-            );
-
-            if(!string.IsNullOrEmpty( ql.Url)&&
-                !string.IsNullOrEmpty(ql.ClientID)&&
-                !string.IsNullOrEmpty(ql.ClientSecret)
-                )
-            {
-                this.button2.Show();
-            }
-            else
-            {
-                this.button2.Hide();
-            }
+            Control.CheckForIllegalCrossThreadCalls = false;
+            GetQLConfig();
         }
+        public void GetQLConfig()
+        {
+            ql = new QLHelp( );
 
+            //ql.Login();
+
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.chromiumWebBrowser1.Load("https://bean.m.jd.com/bean/signIndex.action");
+            //this.chromiumWebBrowser1.Load("https://bean.m.jd.com/bean/signIndex.action");
+            LoginInitAsync();
+            InitAccount();
         }
 
+        private async Task LoginInitAsync()
+        {
+
+         
+           await this.chromiumWebBrowser1.LoadUrlAsync("https://bean.m.jd.com/bean/signIndex.action"); 
+           this.chromiumWebBrowser1.ExecuteScriptAsync("document.querySelector(\"#app > div > p.policy_tip > input\").click();");
+          
+
+        }
+
+        /// <summary>
+        /// 获取cookie
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -59,6 +69,11 @@ namespace JD_Get
           
         }
 
+        /// <summary>
+        /// cookie 格式化 
+        /// 因为是异步获取所以采用追加到文本框的方式
+        /// </summary>
+        /// <param name="cookie"></param>
         private void visitor_SendCookie(CefSharp.Cookie cookie)
         {
             if (cookie.Name == "pt_key" || cookie.Name == "pt_pin") {
@@ -105,14 +120,25 @@ namespace JD_Get
         private void button2_Click(object sender, EventArgs e)
         {
             string pt_pin = this.label1.Text;
+            if (string.IsNullOrEmpty(ql.ClientSecret) || string.IsNullOrEmpty(ql.ClientID) || string.IsNullOrEmpty(ql.Url))
+            {
+                MessageBox.Show("青龙面板配置不完整，点击青龙配置按钮，输入完成参数");
+                return;
+            }
+            
             if (string.IsNullOrEmpty(pt_pin))
             {
-                MessageBox.Show("未获取到cookie 请先登录");
+                MessageBox.Show("未获取到cookie 请先登录后点击获取Cookies按钮");
                 return;
             }
             Send(pt_pin, this.textBox1.Text);
 
         }
+        /// <summary>
+        /// 发送cookies到青龙
+        /// </summary>
+        /// <param name="pin"></param>
+        /// <param name="key"></param>
         private void Send(string pin, string key)
         {
             try
@@ -136,6 +162,72 @@ namespace JD_Get
             }
           
            
+        }
+
+        private void ClearCookie()
+        {
+
+            // 清除所有cookies
+            Cef.GetGlobalCookieManager().DeleteCookies("", "");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ClearCookie();
+                LoginInitAsync(); 
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            EditQL popup = new EditQL(this); 
+            popup.StartPosition = FormStartPosition.CenterParent;
+            popup.ShowDialog(this);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Account popup = new Account(this);
+            popup.StartPosition = FormStartPosition.CenterParent;
+            popup.ShowDialog(this);
+        }
+
+        public void InitAccount()
+        { 
+            var accounts= AccountHelp.GetAccounts();
+            comboBox1.DisplayMember = "Login";
+            comboBox1.ValueMember = "Login"; 
+            // 将整个列表绑定到ComboBox的DataSource
+            comboBox1.DataSource = accounts;
+
+
+        }
+        /// <summary>
+        /// 直接输入账号会清空 暂时不处理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //string s = $@"document.querySelector(""#app > div > div:nth-child(3) > p:nth-child(1) > input"").value=""{((AccountHelp.Account)this.comboBox1.SelectedItem).Login}"";";
+            //s += $@"document.querySelector(""#username"").value=""{((AccountHelp.Account)this.comboBox1.SelectedItem).Login}"";";
+            //s += $@"document.querySelector(""#pwd"").value=""{((AccountHelp.Account)this.comboBox1.SelectedItem).Password}"";";
+            
+            //try
+            //{
+            //    this.chromiumWebBrowser1.ExecuteScriptAsync(s);
+            //}catch (Exception ex)
+            //{
+
+            //}
+            
         }
     }
 }

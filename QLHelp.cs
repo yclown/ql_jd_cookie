@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,8 +27,14 @@ namespace JD_Get
             ClientSecret = clientSecret;
             Token = "";
         }
+        public QLHelp()
+        {
+            Url = ConfigHelp.GetConfig("QL_URL"); 
+            ClientID = ConfigHelp.GetConfig("QL_ClientID");
+            ClientSecret = ConfigHelp.GetConfig("QL_ClientSecret");
+            Token = "";
+        }
 
-      
         public string GetResponse(string url, out string statusCode)
         {
             
@@ -96,15 +103,24 @@ namespace JD_Get
         public  string Login()
         {
             string code = "";
-            //var responseData = GetResponse($"{Url}/open/auth/token?client_id={ClientID}&client_secret={ClientSecret}",
-            //    out code);
-            //JObject jsonObj = JObject.Parse(responseData);
-            
-            //return this.Token;
-            var responseData = GetResponse($"/open/auth/token?client_id={ClientID}&client_secret={ClientSecret}", out code);
-            JObject jsonObj = JObject.Parse(responseData);
-            this.Token = jsonObj["data"]["token_type"].ToString() + " " + jsonObj["data"]["token"].ToString();
-            return this.Token;
+            try
+            {  //return this.Token;
+                var responseData = GetResponse($"/open/auth/token?client_id={ClientID}&client_secret={ClientSecret}", out code);
+                JObject jsonObj = JObject.Parse(responseData);
+
+               
+                if(jsonObj["code"].ToString() != "200")
+                {
+                    throw new Exception(jsonObj["message"].ToString());
+                }
+                
+                this.Token = jsonObj["data"]["token_type"].ToString() + " " + jsonObj["data"]["token"].ToString();
+                return this.Token;
+
+            } catch (Exception e) {
+                throw e;
+            }
+          
         }
 
         /// <summary>
