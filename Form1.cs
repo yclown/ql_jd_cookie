@@ -143,7 +143,11 @@ namespace JD_Get
         {
             try
             {
-                ql.Login();
+                if (string.IsNullOrEmpty(ql.Token))
+                {
+                    ql.Login();
+                }
+               
                 string id = ql.GetEnvs(pin);
                 if (string.IsNullOrEmpty(id))
                 {
@@ -158,6 +162,7 @@ namespace JD_Get
             }
             catch(Exception e)
             {
+                ql.Token = "";
                 MessageBox.Show("发送失败："+e.Message);
             }
           
@@ -176,7 +181,9 @@ namespace JD_Get
             try
             {
                 ClearCookie();
-                LoginInitAsync(); 
+                LoginInitAsync();
+                this.textBox1.Text = "";
+                this.label1.Text = "";
             }
             catch(Exception ex)
             {

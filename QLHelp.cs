@@ -57,6 +57,20 @@ namespace JD_Get
             statusCode = response.StatusCode.ToString();
             return response.Content;
         }
+        public string GetLoginResponse(string url, out string statusCode)
+        {
+
+
+            var options = new RestClientOptions(Url); 
+
+            var client = new RestClient(options);
+            var request = new RestRequest(url); 
+            // The cancellation token comes from the caller. You can still make a call without it.
+            var response = client.Get(request);
+            statusCode = response.StatusCode.ToString();
+            return response.Content;
+        }
+
         public string PutResponse(string url,  string postData, out string statusCode)
         {
             var options = new RestClientOptions(Url);
@@ -105,7 +119,7 @@ namespace JD_Get
             string code = "";
             try
             {  //return this.Token;
-                var responseData = GetResponse($"/open/auth/token?client_id={ClientID}&client_secret={ClientSecret}", out code);
+                var responseData = GetLoginResponse($"/open/auth/token?client_id={ClientID}&client_secret={ClientSecret}", out code);
                 JObject jsonObj = JObject.Parse(responseData);
 
                
