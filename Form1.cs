@@ -180,10 +180,15 @@ namespace JD_Get
         {
             try
             {
-                ClearCookie();
-                LoginInitAsync();
-                this.textBox1.Text = "";
-                this.label1.Text = "";
+                DialogResult AF = MessageBox.Show("您确定重新登录？", "确认框", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (AF == DialogResult.OK)
+                {
+                    ClearCookie();
+                    LoginInitAsync();
+                    this.textBox1.Text = "";
+                    this.label1.Text = "";
+                } 
+                
             }
             catch(Exception ex)
             {
