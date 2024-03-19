@@ -30,3 +30,5 @@ QL_URL 青龙面板地址 示例http://ip:5700
 6. 创建好应用后，填写到配置中
 
 
+## 界面预览
+![image](https://github.com/yclown/ql_jd_cookie/blob/main/preview/main.png)
