@@ -142,7 +142,7 @@ namespace JD_Get
             this.Controls.Add(this.chromiumWebBrowser1);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
-            this.Text = "青龙京东助手";
+            this.Text = "青龙京东助手v2.2";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

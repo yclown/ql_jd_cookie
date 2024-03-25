@@ -29,11 +29,12 @@ namespace JD_Get
             InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
             GetQLConfig();
+            
         }
         public void GetQLConfig()
         {
             ql = new QLHelp( );
-
+           
             //ql.Login();
 
         }
@@ -163,6 +164,7 @@ namespace JD_Get
             catch(Exception e)
             {
                 ql.Token = "";
+                LogHelper.Error(e,"发送日志：");
                 MessageBox.Show("发送失败："+e.Message);
             }
           
