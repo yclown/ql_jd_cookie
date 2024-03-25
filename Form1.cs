@@ -230,18 +230,24 @@ namespace JD_Get
         /// <param name="e"></param>
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //string s = $@"document.querySelector(""#app > div > div:nth-child(3) > p:nth-child(1) > input"").value=""{((AccountHelp.Account)this.comboBox1.SelectedItem).Login}"";";
-            //s += $@"document.querySelector(""#username"").value=""{((AccountHelp.Account)this.comboBox1.SelectedItem).Login}"";";
-            //s += $@"document.querySelector(""#pwd"").value=""{((AccountHelp.Account)this.comboBox1.SelectedItem).Password}"";";
-            
-            //try
-            //{
-            //    this.chromiumWebBrowser1.ExecuteScriptAsync(s);
-            //}catch (Exception ex)
-            //{
 
+            //var account= (AccountHelp.Account)this.comboBox1.SelectedItem;
+            //if (account != null)
+            //{
+            //    String execJs = "var account='" + account.Login + "';"; 
+            //    execJs += "var evt=new InputEvent('input',{inputType:'insertText',data:account,dataTransfer:null,isComposing:false});";
+            //    execJs += "document.getElementById('username').value=account;";
+            //    execJs += "document.getElementById('username').dispatchEvent(evt);"; 
+            //    try
+            //    {
+            //        this.chromiumWebBrowser1.ExecuteScriptAsync(execJs);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        LogHelper.Error(ex, "自动输入账号");
+            //    }
             //}
-            
+           
         }
     }
 }
