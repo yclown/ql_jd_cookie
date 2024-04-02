@@ -32,16 +32,39 @@ namespace JD_Get
             ConfigHelp.SetSetting("QL_ClientSecret", QL_ClientSecret.Text);
            
             form.GetQLConfig();
+          
+
             this.Close();
         }
        
          
-    private void EditQL_Load(object sender, EventArgs e)
+        private void EditQL_Load(object sender, EventArgs e)
         {
             var ql= new QLHelp();
             this.QL_URL.Text = ql.Url;
             this.QL_ClientID.Text = ql.ClientID;
             this.QL_ClientSecret.Text = ql.ClientSecret;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var testQL = new QLHelp()
+            {
+                ClientID= QL_ClientID.Text,
+                ClientSecret= QL_ClientSecret.Text,
+                Url = QL_URL.Text,
+
+            };
+            try
+            {
+                string token = testQL.Login();
+                MessageBox.Show("测试通过");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("参数存在错误"+ex.Message);
+            }
+             
         }
     }
 }
