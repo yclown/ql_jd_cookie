@@ -45,11 +45,9 @@ namespace JD_Get
             InitAccount();
         }
 
-        private async Task LoginInitAsync()
-        {
-
-         
-           await this.chromiumWebBrowser1.LoadUrlAsync("https://bean.m.jd.com/bean/signIndex.action"); 
+        private void LoginInitAsync()
+        { 
+           var res= this.chromiumWebBrowser1.LoadUrlAsync("https://bean.m.jd.com/bean/signIndex.action").Result; 
            this.chromiumWebBrowser1.ExecuteScriptAsync("document.querySelector(\"#app > div > p.policy_tip > input\").click();");
           
 
