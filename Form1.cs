@@ -29,20 +29,22 @@ namespace JD_Get
             InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
             GetQLConfig();
-            
+
+          
         }
+
+
         public void GetQLConfig()
         {
             ql = new QLHelp( );
-           
-            //ql.Login();
-
+            
         }
         private void Form1_Load(object sender, EventArgs e)
-        {
-            //this.chromiumWebBrowser1.Load("https://bean.m.jd.com/bean/signIndex.action");
+        { 
             LoginInitAsync();
             InitAccount();
+            this.Location = Properties.Settings.Default.FormLocation;
+            this.Size = Properties.Settings.Default.FormSize;
         }
 
         private void LoginInitAsync()
@@ -61,11 +63,8 @@ namespace JD_Get
         private void button1_Click(object sender, EventArgs e)
         {
 
-            var cookieManager = this.chromiumWebBrowser1.GetCookieManager();
-            var visitor = new CookieVisitor();
-            visitor.SendCookie += visitor_SendCookie;
-            cookieManager.VisitAllCookies(visitor);
-          
+            GetCookies();
+            
         }
 
         /// <summary>
@@ -86,8 +85,11 @@ namespace JD_Get
 
         private class CookieVisitor : ICookieVisitor
         {
+          
             //public List<CefSharp.Cookie> AllCookies { get; } = new List<CefSharp.Cookie>();
             public event Action<CefSharp.Cookie> SendCookie;
+
+
             public bool Visit(CefSharp.Cookie cookie, int count, int total, ref bool deleteCookie)
             {
                 deleteCookie = false;
@@ -107,10 +109,7 @@ namespace JD_Get
            
         }
 
-
-
-     
-
+      
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -246,6 +245,45 @@ namespace JD_Get
             //    }
             //}
            
+        }
+        /// <summary>
+        /// 登录后自动获取
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void chromiumWebBrowser1_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
+        {
+            var brow = (CefSharp.WinForms.ChromiumWebBrowser)sender;
+            var addr = brow.Address;
+            if(addr== "https://bean.m.jd.com/bean/signIndex.action")
+            {
+                GetCookies();
+
+            }
+             
+        }
+        /// <summary>
+        /// 获取cookie
+        /// </summary>
+        private void GetCookies()
+        {
+            this.textBox1.Text = "";
+            this.label1.Text = "";
+            var cookieManager = this.chromiumWebBrowser1.GetCookieManager();
+            var visitor = new CookieVisitor();
+            visitor.SendCookie += visitor_SendCookie;
+            cookieManager.VisitAllCookies(visitor);
+        }
+        /// <summary>
+        /// 保存窗口属性
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        { 
+            Properties.Settings.Default.FormLocation = this.Location;
+            Properties.Settings.Default.FormSize = this.Size;
+            Properties.Settings.Default.Save();
         }
     }
 }
