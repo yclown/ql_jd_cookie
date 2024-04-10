@@ -146,7 +146,7 @@ namespace JD_Get
             this.panel1.Controls.Add(this.button3);
             this.panel1.Location = new System.Drawing.Point(434, 21);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(388, 149);
+            this.panel1.Size = new System.Drawing.Size(388, 199);
             this.panel1.TabIndex = 10;
             // 
             // Form1
@@ -157,7 +157,7 @@ namespace JD_Get
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.chromiumWebBrowser1);
             this.Name = "Form1";
-            this.Text = "青龙京东助手v2.2";
+            this.Text = "青龙京东助手v2.3";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
