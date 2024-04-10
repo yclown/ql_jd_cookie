@@ -157,7 +157,7 @@ namespace JD_Get
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.chromiumWebBrowser1);
             this.Name = "Form1";
-            this.Text = "青龙京东助手v2.3";
+            this.Text = "青龙京东助手v2.3.1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
