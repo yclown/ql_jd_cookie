@@ -2,6 +2,7 @@
 青龙面板的京东cookie获取工具，配置api应用后可一键发送到青龙面板。
  <br />给小伙伴愉快的使用体验
 
+
 ## 安卓版
 [安卓版](https://github.com/yclown/jdck-android)
  
@@ -30,7 +31,8 @@ QL_URL 青龙面板地址 示例http://ip:5700
 4. 创建应用
 5. 权限全部选上
 6. 创建好应用后，填写到配置中
-
+示例
+![image](https://github.com/yclown/ql_jd_cookie/blob/main/preview/ql.png)
 
 ## 界面预览
 ![image](https://github.com/yclown/ql_jd_cookie/blob/main/preview/main.png)
