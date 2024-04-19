@@ -160,6 +160,7 @@
   <ItemGroup>
     <Content Include=".gitignore" />
     <Content Include="preview\main.png" />
+    <Content Include="preview\ql.png" />
     <Content Include="ql青龙logo.ico" />
   </ItemGroup>
   <ItemGroup>
