@@ -24,6 +24,8 @@ namespace JD_Get
 
         public QLHelp ql { set; get; }
         public List<string> needCookieName { set; get; }
+        //https://bean.m.jd.com/bean/signIndex.action
+        public string LoginUrl = "https://home.m.jd.com/myJd/home.action";
         public Form1()
         {
             InitializeComponent();
@@ -49,7 +51,7 @@ namespace JD_Get
 
         private void LoginInitAsync()
         { 
-           var res= this.chromiumWebBrowser1.LoadUrlAsync("https://bean.m.jd.com/bean/signIndex.action").Result; 
+           var res= this.chromiumWebBrowser1.LoadUrlAsync(LoginUrl).Result; 
            this.chromiumWebBrowser1.ExecuteScriptAsync("document.querySelector(\"#app > div > p.policy_tip > input\").click();");
           
 
@@ -255,7 +257,7 @@ namespace JD_Get
         {
             var brow = (CefSharp.WinForms.ChromiumWebBrowser)sender;
             var addr = brow.Address;
-            if(addr== "https://bean.m.jd.com/bean/signIndex.action")
+            if(addr== "https://home.m.jd.com/myJd/home.action")
             {
                 GetCookies();
 
