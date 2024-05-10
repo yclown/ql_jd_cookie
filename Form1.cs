@@ -181,14 +181,25 @@ namespace JD_Get
         {
             try
             {
-                DialogResult AF = MessageBox.Show("您确定重新登录？", "确认框", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                if (AF == DialogResult.OK)
+                var ShowReLoginSure = ConfigHelp.GetConfig("ShowReLoginSure");
+                if (string.IsNullOrEmpty(ShowReLoginSure))
+                {
+                    DialogResult AF = MessageBox.Show("您确定重新登录？", "确认框", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                    if (AF == DialogResult.OK)
+                    {
+                        ClearCookie();
+                        LoginInitAsync();
+                        this.textBox1.Text = "";
+                        this.label1.Text = "";
+                    }
+                }
+                else
                 {
                     ClearCookie();
                     LoginInitAsync();
                     this.textBox1.Text = "";
                     this.label1.Text = "";
-                } 
+                }
                 
             }
             catch(Exception ex)
