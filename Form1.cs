@@ -26,13 +26,16 @@ namespace JD_Get
         public List<string> needCookieName { set; get; }
         //https://bean.m.jd.com/bean/signIndex.action
         public string LoginUrl = "https://home.m.jd.com/myJd/home.action";
+
+        public bool Auto = false;
         public Form1()
         {
             InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
             GetQLConfig();
-
           
+
+
         }
 
 
@@ -42,21 +45,36 @@ namespace JD_Get
             
         }
         private void Form1_Load(object sender, EventArgs e)
-        { 
+        {
+            string auto = ConfigHelp.GetConfig("Auto");
+            if (!string.IsNullOrEmpty(auto))
+            {
+                Auto = Convert.ToBoolean(auto);
+
+            }
+            this.checkBox1.Checked = Auto;
             LoginInitAsync();
             InitAccount();
+         
             this.Location = Properties.Settings.Default.FormLocation;
             this.Size = Properties.Settings.Default.FormSize;
         }
-
+ 
         private void LoginInitAsync()
         { 
-           var res= this.chromiumWebBrowser1.LoadUrlAsync(LoginUrl).Result; 
-           this.chromiumWebBrowser1.ExecuteScriptAsync("document.querySelector(\"#app > div > p.policy_tip > input\").click();");
-          
+           var res= this.chromiumWebBrowser1.LoadUrlAsync(LoginUrl).Result;
+            //this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded("document.getElementsByClassName('policy_tip-checkbox')[0].click();setTimeout(function() {alert(1)},1000);");
 
+            string script = " document.getElementsByClassName('policy_tip-checkbox')[0].click();"; 
+
+            if (Auto)
+            {
+                //script += @"setTimeout(function() {document.getElementsByClassName('planBLogin')[0].click();"+GetLoginScript()+"},1000)";
+                script += @"setTimeout(function() {document.getElementsByClassName('planBLogin')[0].click();"+GetLoginScript()+"},1000)";
+            }
+            this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded(script);
         }
-
+       
         /// <summary>
         /// 获取cookie
         /// </summary>
@@ -240,24 +258,44 @@ namespace JD_Get
         /// <param name="e"></param>
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            CompleteAP();
+        }
 
-            //var account= (AccountHelp.Account)this.comboBox1.SelectedItem;
-            //if (account != null)
-            //{
-            //    String execJs = "var account='" + account.Login + "';"; 
-            //    execJs += "var evt=new InputEvent('input',{inputType:'insertText',data:account,dataTransfer:null,isComposing:false});";
-            //    execJs += "document.getElementById('username').value=account;";
-            //    execJs += "document.getElementById('username').dispatchEvent(evt);"; 
-            //    try
-            //    {
-            //        this.chromiumWebBrowser1.ExecuteScriptAsync(execJs);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        LogHelper.Error(ex, "自动输入账号");
-            //    }
-            //}
-           
+
+        public void CompleteAP() {
+            var LoginScript = GetLoginScript();
+            if (!string.IsNullOrEmpty(LoginScript))
+            { 
+                try
+                {
+                    this.chromiumWebBrowser1.ExecuteScriptAsync(LoginScript);
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error(ex, "自动输入账号");
+                }
+            } 
+        }
+
+        public string GetLoginScript()
+        {
+            var account = (AccountHelp.Account)this.comboBox1.SelectedItem;
+            if (account != null)
+            {
+                String execJs = "var account='" + account.Login + "';";
+                execJs += "var password='" + account.Password + "';";
+                execJs += "var evt=new InputEvent('input',{inputType:'insertText',data:account,dataTransfer:null,isComposing:false});";
+                execJs += "document.getElementById('username').value=account;";
+                execJs += "document.getElementById('username').dispatchEvent(evt);";
+                execJs += @"
+                    var evt=new InputEvent('input',{inputType:'insertText',data:password,dataTransfer:null,isComposing:false});
+                    document.getElementById('pwd').value=account;
+                    document.getElementById('pwd').dispatchEvent(evt);
+                ";
+                execJs += "document.querySelector('#app>div>a').click()";
+                return execJs;
+            }
+            return "";
         }
         /// <summary>
         /// 登录后自动获取
@@ -298,5 +336,13 @@ namespace JD_Get
             Properties.Settings.Default.FormSize = this.Size;
             Properties.Settings.Default.Save();
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Auto = checkBox1.Checked;
+            ConfigHelp.SetSetting("Auto", checkBox1.Checked.ToString());
+        }
+
+        
     }
 }
