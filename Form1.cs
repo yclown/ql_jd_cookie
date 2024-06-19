@@ -289,7 +289,7 @@ namespace JD_Get
                 execJs += "document.getElementById('username').dispatchEvent(evt);";
                 execJs += @"
                     var evt=new InputEvent('input',{inputType:'insertText',data:password,dataTransfer:null,isComposing:false});
-                    document.getElementById('pwd').value=account;
+                    document.getElementById('pwd').value=password;
                     document.getElementById('pwd').dispatchEvent(evt);
                 ";
                 execJs += "document.querySelector('#app>div>a').click()";
