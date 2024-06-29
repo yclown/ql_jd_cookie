@@ -39,8 +39,8 @@ namespace JD_Get
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button6 = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -152,6 +152,16 @@ namespace JD_Get
             this.panel1.Size = new System.Drawing.Size(388, 199);
             this.panel1.TabIndex = 10;
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(6, 152);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 11;
+            this.button6.Text = "多开";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
@@ -163,16 +173,6 @@ namespace JD_Get
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(6, 152);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 11;
-            this.button6.Text = "多开";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -181,7 +181,7 @@ namespace JD_Get
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.chromiumWebBrowser1);
             this.Name = "Form1";
-            this.Text = "青龙京东助手v2.4.1";
+            this.Text = "青龙京东助手v2.4.2";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
