@@ -343,6 +343,10 @@ namespace JD_Get
             ConfigHelp.SetSetting("Auto", checkBox1.Checked.ToString());
         }
 
-        
+        private void button6_Click(object sender, EventArgs e)
+        {
+            var form = new Form1();
+            form.Show();
+        }
     }
 }
