@@ -167,10 +167,11 @@ namespace JD_Get
             patientinfo["id"] = id;
             patientinfo["value"] = value;
             patientinfo["name"] = "JD_COOKIE";
-            
-            patientinfo["remarks"] = remarks;
+            if (!string.IsNullOrEmpty(remarks)) {
+                patientinfo["remarks"] = remarks;
+            } 
             string postdata = JsonConvert.SerializeObject(patientinfo);
-
+            
             var responseData = PutResponse($"/open/envs", postdata,
                 out code);
            
