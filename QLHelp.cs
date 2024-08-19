@@ -160,13 +160,15 @@ namespace JD_Get
         /// <param name="id"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public string UpdateEnvs(string id,string value)
+        public string UpdateEnvs(string id,string value,string remarks="")
         {
             string code = "";
             JObject patientinfo = new JObject();
             patientinfo["id"] = id;
             patientinfo["value"] = value;
             patientinfo["name"] = "JD_COOKIE";
+            
+            patientinfo["remarks"] = remarks;
             string postdata = JsonConvert.SerializeObject(patientinfo);
 
             var responseData = PutResponse($"/open/envs", postdata,

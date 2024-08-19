@@ -236,7 +236,7 @@ namespace JD_Get
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Account popup = new Account(this);
+            AccountForm popup = new AccountForm(this);
             popup.StartPosition = FormStartPosition.CenterParent;
             popup.ShowDialog(this);
         }
@@ -244,8 +244,8 @@ namespace JD_Get
         public void InitAccount()
         { 
             var accounts= AccountHelp.GetAccounts();
-            comboBox1.DisplayMember = "Login";
-            comboBox1.ValueMember = "Login"; 
+            //comboBox1.DisplayMember = "Login";
+            //comboBox1.ValueMember = "Login"; 
             // 将整个列表绑定到ComboBox的DataSource
             comboBox1.DataSource = accounts;
 
