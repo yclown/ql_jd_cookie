@@ -41,12 +41,13 @@ namespace JD_Get
             this.panel1 = new System.Windows.Forms.Panel();
             this.button6 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.button7 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(351, 102);
+            this.button1.Location = new System.Drawing.Point(356, 111);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(98, 23);
             this.button1.TabIndex = 1;
@@ -68,16 +69,16 @@ namespace JD_Get
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(6, 38);
+            this.textBox1.Location = new System.Drawing.Point(6, 65);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(443, 37);
+            this.textBox1.Size = new System.Drawing.Size(448, 37);
             this.textBox1.TabIndex = 3;
             // 
             // button2
             // 
             this.button2.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.button2.Location = new System.Drawing.Point(351, 152);
+            this.button2.Location = new System.Drawing.Point(356, 152);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(98, 23);
             this.button2.TabIndex = 4;
@@ -97,7 +98,7 @@ namespace JD_Get
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(6, 102);
+            this.button3.Location = new System.Drawing.Point(6, 111);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 6;
@@ -118,9 +119,9 @@ namespace JD_Get
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(379, 9);
+            this.button4.Location = new System.Drawing.Point(379, 36);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(70, 23);
+            this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 8;
             this.button4.Text = "青龙配置";
             this.button4.UseVisualStyleBackColor = true;
@@ -128,7 +129,7 @@ namespace JD_Get
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(298, 9);
+            this.button5.Location = new System.Drawing.Point(379, 7);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 9;
@@ -139,6 +140,7 @@ namespace JD_Get
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.button7);
             this.panel1.Controls.Add(this.button6);
             this.panel1.Controls.Add(this.checkBox1);
             this.panel1.Controls.Add(this.textBox1);
@@ -171,9 +173,19 @@ namespace JD_Get
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(72, 16);
             this.checkBox1.TabIndex = 10;
-            this.checkBox1.Text = "自动带入";
+            this.checkBox1.Text = "自动登录";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(298, 7);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 12;
+            this.button7.Text = "快速填入";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // Form1
             // 
@@ -205,6 +217,7 @@ namespace JD_Get
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
     }
 }
 

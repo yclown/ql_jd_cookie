@@ -63,14 +63,16 @@ namespace JD_Get
         private void LoginInitAsync()
         { 
            var res= this.chromiumWebBrowser1.LoadUrlAsync(LoginUrl).Result;
-            //this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded("document.getElementsByClassName('policy_tip-checkbox')[0].click();setTimeout(function() {alert(1)},1000);");
-
-            string script = " document.getElementsByClassName('policy_tip-checkbox')[0].click();"; 
+            string script = ""; 
 
             if (Auto)
             {
-                //script += @"setTimeout(function() {document.getElementsByClassName('planBLogin')[0].click();"+GetLoginScript()+"},1000)";
-                script += @"setTimeout(function() {document.getElementsByClassName('planBLogin')[0].click();"+GetLoginScript()+"},1000)";
+                script += $@"setTimeout(function() {{
+                               
+                                {GetLoginScript()}
+                            
+                        }},2000)"; 
+                //script += "$(function(){ "+GetLoginScript()+" })";
             }
             this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded(script);
         }
@@ -248,17 +250,31 @@ namespace JD_Get
             //comboBox1.ValueMember = "Login"; 
             // 将整个列表绑定到ComboBox的DataSource
             comboBox1.DataSource = accounts;
-
+            comboBox1.SelectedIndex = -1;
 
         }
         /// <summary>
-        /// 直接输入账号会清空 暂时不处理
+        /// 直接输入账号
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CompleteAP();
+            //CompleteAP();
+            var select= (System.Windows.Forms.ComboBox)sender;
+
+
+            if (this.checkBox1.Checked) {
+                if (select.SelectedIndex > 0)
+                {
+                    ClearCookie();
+                    LoginInitAsync();
+                    this.textBox1.Text = "";
+                    this.label1.Text = "";
+                }
+            }
+           
+             
         }
 
 
@@ -282,7 +298,11 @@ namespace JD_Get
             var account = (AccountHelp.Account)this.comboBox1.SelectedItem;
             if (account != null)
             {
-                String execJs = "var account='" + account.Login + "';";
+                String execJs = "(function() {";
+                execJs += "if(!$('.policy_tip-checkbox')[0].checked) { document.getElementsByClassName('policy_tip-checkbox')[0].click(); }";
+                execJs += "if($('#username').closest('div').css('display')=='none'){ document.getElementsByClassName('planBLogin')[0].click(); }";
+                
+                execJs += "var account='" + account.Login + "';";
                 execJs += "var password='" + account.Password + "';";
                 execJs += "var evt=new InputEvent('input',{inputType:'insertText',data:account,dataTransfer:null,isComposing:false});";
                 execJs += "document.getElementById('username').value=account;";
@@ -292,7 +312,9 @@ namespace JD_Get
                     document.getElementById('pwd').value=password;
                     document.getElementById('pwd').dispatchEvent(evt);
                 ";
-                execJs += "document.querySelector('#app>div>a').click()";
+                execJs += "document.querySelector('#app>div>a').click();";
+                //execJs += "alert('ok');";
+                execJs += "})();";
                 return execJs;
             }
             return "";
@@ -347,6 +369,11 @@ namespace JD_Get
         {
             var form = new Form1();
             form.Show();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            CompleteAP();
         }
     }
 }
