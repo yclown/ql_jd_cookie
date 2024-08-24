@@ -62,25 +62,30 @@ namespace JD_Get
 
             #if DEBUG
                 this.label1.Text = "123";
-            #endif
+#endif
+            this.chromiumWebBrowser1.AddressChanged += AddressChanged;
+        }
 
+        private void AddressChanged(object sender, AddressChangedEventArgs e)
+        {
+            var browser = (ChromiumWebBrowser)sender;
+            string currentAddress = browser.Address;
+            // 处理当前地址（currentAddress）  
+            //Console.WriteLine($"Page loaded: {currentAddress}");
+            if (currentAddress.Contains("/login/login")&& Auto)
+            {
+                string script = "$(function(){";
+                script += $@"setTimeout(function() {{ 
+                                {GetLoginScript()} 
+                        }},2000)"; 
+                script += "})";
+                this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded(script);
+            }
         }
 
         private void LoginInitAsync()
         { 
-           var res= this.chromiumWebBrowser1.LoadUrlAsync(LoginUrl).Result;
-            string script = ""; 
-
-            if (Auto)
-            {
-                script += $@"setTimeout(function() {{
-                               
-                                {GetLoginScript()}
-                            
-                        }},2000)"; 
-                //script += "$(function(){ "+GetLoginScript()+" })";
-            }
-            this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded(script);
+            this.chromiumWebBrowser1.LoadUrl(LoginUrl); 
         }
        
         /// <summary>
