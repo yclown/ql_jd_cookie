@@ -58,8 +58,14 @@ namespace JD_Get
          
             this.Location = Properties.Settings.Default.FormLocation;
             this.Size = Properties.Settings.Default.FormSize;
+            this.Text = this.Text + "V" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+            #if DEBUG
+                this.label1.Text = "123";
+            #endif
+
         }
- 
+
         private void LoginInitAsync()
         { 
            var res= this.chromiumWebBrowser1.LoadUrlAsync(LoginUrl).Result;
@@ -132,11 +138,9 @@ namespace JD_Get
         }
 
       
-        private void label1_Click(object sender, EventArgs e)
-        {
+        
 
-        }
-
+       
         private void button2_Click(object sender, EventArgs e)
         {
             string pt_pin = this.label1.Text;
@@ -151,15 +155,15 @@ namespace JD_Get
                 MessageBox.Show("未获取到cookie 请先登录后点击获取Cookies按钮");
                 return;
             }
-            Send(pt_pin, this.textBox1.Text);
-
+            var res= Send(pt_pin, this.textBox1.Text); 
+            this.textBox2.Text += ( res+ "\r\n" );
         }
         /// <summary>
         /// 发送cookies到青龙
         /// </summary>
         /// <param name="pin"></param>
         /// <param name="key"></param>
-        private void Send(string pin, string key)
+        private string Send(string pin, string key)
         {
             try
             {
@@ -179,12 +183,15 @@ namespace JD_Get
                     ql.EnableEnvs(new List<string>() { id });
                 }
                 MessageBox.Show("发送成功");
+                return $"[{DateTime.Now.ToString("HH:mm:ss")}] pt_pin为{ pin }发送成功";
             }
             catch(Exception e)
             {
                 ql.Token = "";
                 LogHelper.Error(e,"发送日志：");
                 MessageBox.Show("发送失败："+e.Message);
+                //return "pin为" + pin + "发送失败 失败原因"+ e.Message;
+                return $"[{DateTime.Now.ToString("HH:mm:ss")}] pt_pin为{ pin }发送失败 请查看日志";
             }
           
            
@@ -374,6 +381,21 @@ namespace JD_Get
         private void button7_Click(object sender, EventArgs e)
         {
             CompleteAP();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
