@@ -63,7 +63,7 @@ namespace JD_Get
             #if DEBUG
                 this.label1.Text = "123";
 #endif
-            this.chromiumWebBrowser1.AddressChanged += AddressChanged;
+            //this.chromiumWebBrowser1.AddressChanged += AddressChanged;
         }
 
         private void AddressChanged(object sender, AddressChangedEventArgs e)
@@ -72,20 +72,27 @@ namespace JD_Get
             string currentAddress = browser.Address;
             // 处理当前地址（currentAddress）  
             //Console.WriteLine($"Page loaded: {currentAddress}");
-            if (currentAddress.Contains("/login/login")&& Auto)
-            {
-                string script = "$(function(){";
-                script += $@"setTimeout(function() {{ 
-                                {GetLoginScript()} 
-                        }},2000)"; 
-                script += "})";
-                this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded(script);
-            }
+            //if (currentAddress.Contains("/login/login")&& Auto)
+            //{
+            //    string script = "";
+            //    script += $@"setTimeout(function() {{ 
+            //                    {GetLoginScript()} 
+            //            }},2000)";
+            //    //script += "alert(1);";
+            //   // script += "}";
+            //    this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded(script);
+            //}
         }
 
         private void LoginInitAsync()
         { 
-            this.chromiumWebBrowser1.LoadUrl(LoginUrl); 
+            this.chromiumWebBrowser1.LoadUrl(LoginUrl);
+
+            string script = "";
+            script += $@"setTimeout(function() {{ 
+                                {GetLoginScript()} 
+                        }},2000)";
+            this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded(script);
         }
        
         /// <summary>
@@ -261,8 +268,9 @@ namespace JD_Get
             //comboBox1.DisplayMember = "Login";
             //comboBox1.ValueMember = "Login"; 
             // 将整个列表绑定到ComboBox的DataSource
+            comboBox1.Items.Clear();
             comboBox1.DataSource = accounts;
-            comboBox1.SelectedIndex = -1;
+            //comboBox1.SelectedIndex = -1;
 
         }
         /// <summary>
@@ -273,11 +281,12 @@ namespace JD_Get
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             //CompleteAP();
-            var select= (System.Windows.Forms.ComboBox)sender;
+            var select = (System.Windows.Forms.ComboBox)sender;
 
 
-            if (this.checkBox1.Checked) {
-                if (select.SelectedIndex > 0)
+            if (this.checkBox1.Checked)
+            {
+                if (select.SelectedIndex >= 0)
                 {
                     ClearCookie();
                     LoginInitAsync();
@@ -285,11 +294,11 @@ namespace JD_Get
                     this.label1.Text = "";
                 }
             }
-           
-             
+
+
         }
 
-
+      
         public void CompleteAP() {
             var LoginScript = GetLoginScript();
             if (!string.IsNullOrEmpty(LoginScript))
@@ -311,8 +320,8 @@ namespace JD_Get
             if (account != null)
             {
                 String execJs = "(function() {";
-                execJs += "if(!$('.policy_tip-checkbox')[0].checked) { document.getElementsByClassName('policy_tip-checkbox')[0].click(); }";
-                execJs += "if($('#username').closest('div').css('display')=='none'){ document.getElementsByClassName('planBLogin')[0].click(); }";
+                execJs += "if(!document.getElementsByClassName('policy_tip-checkbox')[0].checked) { document.getElementsByClassName('policy_tip-checkbox')[0].click(); }";
+                execJs += "if(document.getElementById('username').closest('div').style.display=='none'){ document.getElementsByClassName('planBLogin')[0].click(); }";
                 
                 execJs += "var account='" + account.Login + "';";
                 execJs += "var password='" + account.Password + "';";
@@ -347,6 +356,8 @@ namespace JD_Get
             }
              
         }
+        
+
         /// <summary>
         /// 获取cookie
         /// </summary>
@@ -387,20 +398,8 @@ namespace JD_Get
         {
             CompleteAP();
         }
+ 
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+       
     }
 }
