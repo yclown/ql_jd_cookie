@@ -268,7 +268,7 @@ namespace JD_Get
             //comboBox1.DisplayMember = "Login";
             //comboBox1.ValueMember = "Login"; 
             // 将整个列表绑定到ComboBox的DataSource
-            comboBox1.Items.Clear();
+             
             comboBox1.DataSource = accounts;
             //comboBox1.SelectedIndex = -1;
 
@@ -286,7 +286,7 @@ namespace JD_Get
 
             if (this.checkBox1.Checked)
             {
-                if (select.SelectedIndex >= 0)
+                if (select.SelectedIndex > 0)
                 {
                     ClearCookie();
                     LoginInitAsync();
@@ -347,13 +347,13 @@ namespace JD_Get
         /// <param name="e"></param>
         private void chromiumWebBrowser1_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
         {
-            var brow = (CefSharp.WinForms.ChromiumWebBrowser)sender;
-            var addr = brow.Address;
-            if(addr== "https://home.m.jd.com/myJd/home.action")
-            {
-                GetCookies();
+            //var brow = (CefSharp.WinForms.ChromiumWebBrowser)sender;
+            //var addr = brow.Address;
+            //if(addr== "https://home.m.jd.com/myJd/home.action")
+            //{
+            //    GetCookies();
 
-            }
+            //}
              
         }
         

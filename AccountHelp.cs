@@ -28,7 +28,8 @@ namespace JD_Get
             try
             {
                 var list = JsonSerializer.Deserialize<List<Account>>(GetAccountsStr());
-
+                
+                list.Insert(0,new Account());
                 return list;
             }
             catch
