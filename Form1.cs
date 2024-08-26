@@ -1,7 +1,4 @@
-﻿using CefSharp;
-using CefSharp.DevTools.Network;
-using CefSharp.WinForms;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -61,38 +58,34 @@ namespace JD_Get
             this.Text = this.Text + "V" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
             #if DEBUG
-                this.label1.Text = "123";
-#endif
-            //this.chromiumWebBrowser1.AddressChanged += AddressChanged;
+            this.label1.Text = "123";
+            #endif
+            
+            webView21.NavigationCompleted += NavigationCompleted;
         }
 
-        private void AddressChanged(object sender, AddressChangedEventArgs e)
+        private void NavigationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs e)
         {
-            var browser = (ChromiumWebBrowser)sender;
-            string currentAddress = browser.Address;
-            // 处理当前地址（currentAddress）  
-            //Console.WriteLine($"Page loaded: {currentAddress}");
-            //if (currentAddress.Contains("/login/login")&& Auto)
-            //{
-            //    string script = "";
-            //    script += $@"setTimeout(function() {{ 
-            //                    {GetLoginScript()} 
-            //            }},2000)";
-            //    //script += "alert(1);";
-            //   // script += "}";
-            //    this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded(script);
-            //}
+            
+
+
         }
+
+       
 
         private void LoginInitAsync()
-        { 
-            this.chromiumWebBrowser1.LoadUrl(LoginUrl);
+        {  
+            webView21.Source = new Uri(LoginUrl);
 
-            string script = "";
-            script += $@"setTimeout(function() {{ 
+            if (Auto)
+            {
+                string script = "";
+                script += $@"setTimeout(function() {{ 
                                 {GetLoginScript()} 
                         }},2000)";
-            this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded(script);
+                this.webView21.ExecuteScriptAsync(script);
+            }
+           
         }
        
         /// <summary>
@@ -112,46 +105,9 @@ namespace JD_Get
         /// 因为是异步获取所以采用追加到文本框的方式
         /// </summary>
         /// <param name="cookie"></param>
-        private void visitor_SendCookie(CefSharp.Cookie cookie)
-        {
-            if (cookie.Name == "pt_key" || cookie.Name == "pt_pin") {
-                this.textBox1.Text += $"{cookie.Name}={cookie.Value};";
-            } 
-            if(cookie.Name == "pt_pin")
-            {
-                this.label1.Text = cookie.Value;
-            } 
-        }
-
-        private class CookieVisitor : ICookieVisitor
-        {
-          
-            //public List<CefSharp.Cookie> AllCookies { get; } = new List<CefSharp.Cookie>();
-            public event Action<CefSharp.Cookie> SendCookie;
-
-
-            public bool Visit(CefSharp.Cookie cookie, int count, int total, ref bool deleteCookie)
-            {
-                deleteCookie = false;
-                if (SendCookie != null)
-                {
-                    SendCookie(cookie);
-                }
-                //AllCookies.Add(cookie);
-                return true;
-            }
-
-            public void Dispose()
-            {
-                // Dispose相关资源
-            }
-
-           
-        }
-
-      
         
 
+      
        
         private void button2_Click(object sender, EventArgs e)
         {
@@ -211,9 +167,8 @@ namespace JD_Get
 
         private void ClearCookie()
         {
-
-            // 清除所有cookies
-            Cef.GetGlobalCookieManager().DeleteCookies("", "");
+             
+            webView21.CoreWebView2.Profile.ClearBrowsingDataAsync();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -305,7 +260,7 @@ namespace JD_Get
             { 
                 try
                 {
-                    this.chromiumWebBrowser1.ExecuteScriptAsync(LoginScript);
+                    this.webView21.ExecuteScriptAsync(LoginScript);
                 }
                 catch (Exception ex)
                 {
@@ -340,23 +295,8 @@ namespace JD_Get
             }
             return "";
         }
-        /// <summary>
-        /// 登录后自动获取
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void chromiumWebBrowser1_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
-        {
-            //var brow = (CefSharp.WinForms.ChromiumWebBrowser)sender;
-            //var addr = brow.Address;
-            //if(addr== "https://home.m.jd.com/myJd/home.action")
-            //{
-            //    GetCookies();
+   
 
-            //}
-             
-        }
-        
 
         /// <summary>
         /// 获取cookie
@@ -364,11 +304,23 @@ namespace JD_Get
         private void GetCookies()
         {
             this.textBox1.Text = "";
-            this.label1.Text = "";
-            var cookieManager = this.chromiumWebBrowser1.GetCookieManager();
-            var visitor = new CookieVisitor();
-            visitor.SendCookie += visitor_SendCookie;
-            cookieManager.VisitAllCookies(visitor);
+            this.label1.Text = "";  
+
+            var cookieManager = webView21.CoreWebView2.CookieManager; 
+            var cookiesCollection = cookieManager.
+                GetCookiesAsync(webView21.Source.AbsoluteUri).Result;
+
+            foreach (var cookie in cookiesCollection)
+            { 
+                if (cookie.Name == "pt_key" || cookie.Name == "pt_pin")
+                {
+                    this.textBox1.Text += $"{cookie.Name}={cookie.Value};";
+                }
+                if (cookie.Name == "pt_pin")
+                {
+                    this.label1.Text = cookie.Value;
+                }
+            }
         }
         /// <summary>
         /// 保存窗口属性

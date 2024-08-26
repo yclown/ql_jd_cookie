@@ -144,11 +144,11 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CefSharp.WinForms">
-      <Version>120.1.80</Version>
-    </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.16</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Web.WebView2">
+      <Version>1.0.2730-prerelease</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>

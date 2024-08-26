@@ -30,7 +30,6 @@ namespace JD_Get
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.chromiumWebBrowser1 = new CefSharp.WinForms.ChromiumWebBrowser();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -44,7 +43,9 @@ namespace JD_Get
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webView21)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -57,18 +58,6 @@ namespace JD_Get
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // chromiumWebBrowser1
-            // 
-            this.chromiumWebBrowser1.ActivateBrowserOnCreation = false;
-            this.chromiumWebBrowser1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.chromiumWebBrowser1.Location = new System.Drawing.Point(12, 7);
-            this.chromiumWebBrowser1.Name = "chromiumWebBrowser1";
-            this.chromiumWebBrowser1.Size = new System.Drawing.Size(470, 608);
-            this.chromiumWebBrowser1.TabIndex = 2;
-            this.chromiumWebBrowser1.LoadingStateChanged += new System.EventHandler<CefSharp.LoadingStateChangedEventArgs>(this.chromiumWebBrowser1_LoadingStateChanged);
-            // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(6, 65);
@@ -76,7 +65,6 @@ namespace JD_Get
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(448, 37);
             this.textBox1.TabIndex = 3;
-        
             // 
             // button2
             // 
@@ -117,7 +105,6 @@ namespace JD_Get
             this.comboBox1.Size = new System.Drawing.Size(208, 20);
             this.comboBox1.TabIndex = 7;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-         
             // 
             // button4
             // 
@@ -159,7 +146,6 @@ namespace JD_Get
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(463, 546);
             this.panel1.TabIndex = 10;
-          
             // 
             // textBox2
             // 
@@ -179,7 +165,6 @@ namespace JD_Get
             this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 11;
             this.label2.Text = "发送日志：\r\n";
-           
             // 
             // button7
             // 
@@ -212,26 +197,37 @@ namespace JD_Get
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // webView21
+            // 
+            this.webView21.AllowExternalDrop = true;
+            this.webView21.CreationProperties = null;
+            this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.webView21.Location = new System.Drawing.Point(12, 247);
+            this.webView21.Name = "webView21";
+            this.webView21.Size = new System.Drawing.Size(445, 324);
+            this.webView21.TabIndex = 11;
+            this.webView21.ZoomFactor = 1D;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(963, 627);
+            this.Controls.Add(this.webView21);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.chromiumWebBrowser1);
             this.Name = "Form1";
             this.Text = "青龙京东助手";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webView21)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.Button button1;
-        private CefSharp.WinForms.ChromiumWebBrowser chromiumWebBrowser1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label1;
@@ -245,6 +241,7 @@ namespace JD_Get
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox2;
+        private Microsoft.Web.WebView2.WinForms.WebView2 webView21;
     }
 }
 
