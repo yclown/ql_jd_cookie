@@ -180,7 +180,7 @@ namespace JD_Get
         private void ClearCookie()
         {
              
-            //webView21.CoreWebView2.Profile.ClearBrowsingDataAsync();
+            webView21.CoreWebView2.Profile.ClearBrowsingDataAsync();
         }
 
         private void button3_Click(object sender, EventArgs e)
