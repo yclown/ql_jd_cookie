@@ -200,11 +200,14 @@ namespace JD_Get
             // webView21
             // 
             this.webView21.AllowExternalDrop = true;
+            this.webView21.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.webView21.CreationProperties = null;
             this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
-            this.webView21.Location = new System.Drawing.Point(12, 247);
+            this.webView21.Location = new System.Drawing.Point(12, 5);
             this.webView21.Name = "webView21";
-            this.webView21.Size = new System.Drawing.Size(445, 324);
+            this.webView21.Size = new System.Drawing.Size(470, 620);
             this.webView21.TabIndex = 11;
             this.webView21.ZoomFactor = 1D;
             // 

@@ -29,9 +29,7 @@ namespace JD_Get
         {
             InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
-            GetQLConfig();
-          
-
+            GetQLConfig(); 
 
         }
 
@@ -50,6 +48,7 @@ namespace JD_Get
 
             }
             this.checkBox1.Checked = Auto;
+            webView21.Source = new Uri(LoginUrl);
             LoginInitAsync();
             InitAccount();
          
@@ -62,30 +61,43 @@ namespace JD_Get
             #endif
             
             webView21.NavigationCompleted += NavigationCompleted;
+            webView21.SourceChanged += SourceChanged;
+        }
+
+        private void SourceChanged(object sender, Microsoft.Web.WebView2.Core.CoreWebView2SourceChangedEventArgs e)
+        {
+            var web = (Microsoft.Web.WebView2.WinForms.WebView2)sender;
+
         }
 
         private void NavigationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs e)
         {
-            
+            var web= (Microsoft.Web.WebView2.WinForms.WebView2)sender;
 
-
-        }
-
-       
-
-        private void LoginInitAsync()
-        {  
-            webView21.Source = new Uri(LoginUrl);
-
-            if (Auto)
-            {
-                string script = "";
-                script += $@"setTimeout(function() {{ 
+            if(web.Source.AbsoluteUri.Contains("nopasswordcu")){
+                if (Auto)
+                {
+                    string script = "";
+                    script += $@"setTimeout(function() {{ 
                                 {GetLoginScript()} 
                         }},2000)";
-                this.webView21.ExecuteScriptAsync(script);
+                    web.ExecuteScriptAsync(script);
+                }
             }
            
+        }
+
+
+
+        private void LoginInitAsync()
+        {
+            //webView21.Source = new Uri(LoginUrl);
+
+            //webView21.ExecuteScriptAsync("document.cookie='';");
+            webView21.ExecuteScriptAsync("window.location.reload();");
+            webView21.ExecuteScriptAsync($"window.location.href='{LoginUrl}'");
+
+
         }
        
         /// <summary>
@@ -96,7 +108,7 @@ namespace JD_Get
         private void button1_Click(object sender, EventArgs e)
         {
 
-            GetCookies();
+            GetCookiesAsync();
             
         }
 
@@ -168,7 +180,7 @@ namespace JD_Get
         private void ClearCookie()
         {
              
-            webView21.CoreWebView2.Profile.ClearBrowsingDataAsync();
+            //webView21.CoreWebView2.Profile.ClearBrowsingDataAsync();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -301,14 +313,14 @@ namespace JD_Get
         /// <summary>
         /// 获取cookie
         /// </summary>
-        private void GetCookies()
+        private async Task GetCookiesAsync()
         {
             this.textBox1.Text = "";
             this.label1.Text = "";  
 
             var cookieManager = webView21.CoreWebView2.CookieManager; 
-            var cookiesCollection = cookieManager.
-                GetCookiesAsync(webView21.Source.AbsoluteUri).Result;
+            var cookiesCollection =await cookieManager.
+                GetCookiesAsync(webView21.Source.AbsoluteUri);
 
             foreach (var cookie in cookiesCollection)
             { 
