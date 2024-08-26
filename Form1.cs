@@ -24,13 +24,18 @@ namespace JD_Get
 
         public QLHelp ql { set; get; }
         public List<string> needCookieName { set; get; }
+        //https://bean.m.jd.com/bean/signIndex.action
+        public string LoginUrl = "https://home.m.jd.com/myJd/home.action";
+
+        public bool Auto = false;
         public Form1()
         {
             InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
             GetQLConfig();
-
           
+
+
         }
 
 
@@ -40,21 +45,56 @@ namespace JD_Get
             
         }
         private void Form1_Load(object sender, EventArgs e)
-        { 
+        {
+            string auto = ConfigHelp.GetConfig("Auto");
+            if (!string.IsNullOrEmpty(auto))
+            {
+                Auto = Convert.ToBoolean(auto);
+
+            }
+            this.checkBox1.Checked = Auto;
             LoginInitAsync();
             InitAccount();
+         
             this.Location = Properties.Settings.Default.FormLocation;
             this.Size = Properties.Settings.Default.FormSize;
+            this.Text = this.Text + "V" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+            #if DEBUG
+                this.label1.Text = "123";
+#endif
+            //this.chromiumWebBrowser1.AddressChanged += AddressChanged;
+        }
+
+        private void AddressChanged(object sender, AddressChangedEventArgs e)
+        {
+            var browser = (ChromiumWebBrowser)sender;
+            string currentAddress = browser.Address;
+            // 处理当前地址（currentAddress）  
+            //Console.WriteLine($"Page loaded: {currentAddress}");
+            //if (currentAddress.Contains("/login/login")&& Auto)
+            //{
+            //    string script = "";
+            //    script += $@"setTimeout(function() {{ 
+            //                    {GetLoginScript()} 
+            //            }},2000)";
+            //    //script += "alert(1);";
+            //   // script += "}";
+            //    this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded(script);
+            //}
         }
 
         private void LoginInitAsync()
         { 
-           var res= this.chromiumWebBrowser1.LoadUrlAsync("https://bean.m.jd.com/bean/signIndex.action").Result; 
-           this.chromiumWebBrowser1.ExecuteScriptAsync("document.querySelector(\"#app > div > p.policy_tip > input\").click();");
-          
+            this.chromiumWebBrowser1.LoadUrl(LoginUrl);
 
+            string script = "";
+            script += $@"setTimeout(function() {{ 
+                                {GetLoginScript()} 
+                        }},2000)";
+            this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded(script);
         }
-
+       
         /// <summary>
         /// 获取cookie
         /// </summary>
@@ -110,11 +150,9 @@ namespace JD_Get
         }
 
       
-        private void label1_Click(object sender, EventArgs e)
-        {
+        
 
-        }
-
+       
         private void button2_Click(object sender, EventArgs e)
         {
             string pt_pin = this.label1.Text;
@@ -129,15 +167,15 @@ namespace JD_Get
                 MessageBox.Show("未获取到cookie 请先登录后点击获取Cookies按钮");
                 return;
             }
-            Send(pt_pin, this.textBox1.Text);
-
+            var res= Send(pt_pin, this.textBox1.Text); 
+            this.textBox2.Text += ( res+ "\r\n" );
         }
         /// <summary>
         /// 发送cookies到青龙
         /// </summary>
         /// <param name="pin"></param>
         /// <param name="key"></param>
-        private void Send(string pin, string key)
+        private string Send(string pin, string key)
         {
             try
             {
@@ -157,12 +195,15 @@ namespace JD_Get
                     ql.EnableEnvs(new List<string>() { id });
                 }
                 MessageBox.Show("发送成功");
+                return $"[{DateTime.Now.ToString("HH:mm:ss")}] pt_pin为{ pin }发送成功";
             }
             catch(Exception e)
             {
                 ql.Token = "";
                 LogHelper.Error(e,"发送日志：");
                 MessageBox.Show("发送失败："+e.Message);
+                //return "pin为" + pin + "发送失败 失败原因"+ e.Message;
+                return $"[{DateTime.Now.ToString("HH:mm:ss")}] pt_pin为{ pin }发送失败 请查看日志";
             }
           
            
@@ -179,14 +220,25 @@ namespace JD_Get
         {
             try
             {
-                DialogResult AF = MessageBox.Show("您确定重新登录？", "确认框", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                if (AF == DialogResult.OK)
+                var ShowReLoginSure = ConfigHelp.GetConfig("ShowReLoginSure");
+                if (string.IsNullOrEmpty(ShowReLoginSure))
+                {
+                    DialogResult AF = MessageBox.Show("您确定重新登录？", "确认框", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                    if (AF == DialogResult.OK)
+                    {
+                        ClearCookie();
+                        LoginInitAsync();
+                        this.textBox1.Text = "";
+                        this.label1.Text = "";
+                    }
+                }
+                else
                 {
                     ClearCookie();
                     LoginInitAsync();
                     this.textBox1.Text = "";
                     this.label1.Text = "";
-                } 
+                }
                 
             }
             catch(Exception ex)
@@ -205,7 +257,7 @@ namespace JD_Get
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Account popup = new Account(this);
+            AccountForm popup = new AccountForm(this);
             popup.StartPosition = FormStartPosition.CenterParent;
             popup.ShowDialog(this);
         }
@@ -213,38 +265,80 @@ namespace JD_Get
         public void InitAccount()
         { 
             var accounts= AccountHelp.GetAccounts();
-            comboBox1.DisplayMember = "Login";
-            comboBox1.ValueMember = "Login"; 
+            //comboBox1.DisplayMember = "Login";
+            //comboBox1.ValueMember = "Login"; 
             // 将整个列表绑定到ComboBox的DataSource
+             
             comboBox1.DataSource = accounts;
-
+            //comboBox1.SelectedIndex = -1;
 
         }
         /// <summary>
-        /// 直接输入账号会清空 暂时不处理
+        /// 直接输入账号
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //CompleteAP();
+            var select = (System.Windows.Forms.ComboBox)sender;
 
-            //var account= (AccountHelp.Account)this.comboBox1.SelectedItem;
-            //if (account != null)
-            //{
-            //    String execJs = "var account='" + account.Login + "';"; 
-            //    execJs += "var evt=new InputEvent('input',{inputType:'insertText',data:account,dataTransfer:null,isComposing:false});";
-            //    execJs += "document.getElementById('username').value=account;";
-            //    execJs += "document.getElementById('username').dispatchEvent(evt);"; 
-            //    try
-            //    {
-            //        this.chromiumWebBrowser1.ExecuteScriptAsync(execJs);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        LogHelper.Error(ex, "自动输入账号");
-            //    }
-            //}
-           
+
+            if (this.checkBox1.Checked)
+            {
+                if (select.SelectedIndex > 0)
+                {
+                    ClearCookie();
+                    LoginInitAsync();
+                    this.textBox1.Text = "";
+                    this.label1.Text = "";
+                }
+            }
+
+
+        }
+
+      
+        public void CompleteAP() {
+            var LoginScript = GetLoginScript();
+            if (!string.IsNullOrEmpty(LoginScript))
+            { 
+                try
+                {
+                    this.chromiumWebBrowser1.ExecuteScriptAsync(LoginScript);
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.Error(ex, "自动输入账号");
+                }
+            } 
+        }
+
+        public string GetLoginScript()
+        {
+            var account = (AccountHelp.Account)this.comboBox1.SelectedItem;
+            if (account != null)
+            {
+                String execJs = "(function() {";
+                execJs += "if(!document.getElementsByClassName('policy_tip-checkbox')[0].checked) { document.getElementsByClassName('policy_tip-checkbox')[0].click(); }";
+                execJs += "if(document.getElementById('username').closest('div').style.display=='none'){ document.getElementsByClassName('planBLogin')[0].click(); }";
+                
+                execJs += "var account='" + account.Login + "';";
+                execJs += "var password='" + account.Password + "';";
+                execJs += "var evt=new InputEvent('input',{inputType:'insertText',data:account,dataTransfer:null,isComposing:false});";
+                execJs += "document.getElementById('username').value=account;";
+                execJs += "document.getElementById('username').dispatchEvent(evt);";
+                execJs += @"
+                    var evt=new InputEvent('input',{inputType:'insertText',data:password,dataTransfer:null,isComposing:false});
+                    document.getElementById('pwd').value=password;
+                    document.getElementById('pwd').dispatchEvent(evt);
+                ";
+                execJs += "document.querySelector('#app>div>a').click();";
+                //execJs += "alert('ok');";
+                execJs += "})();";
+                return execJs;
+            }
+            return "";
         }
         /// <summary>
         /// 登录后自动获取
@@ -253,15 +347,17 @@ namespace JD_Get
         /// <param name="e"></param>
         private void chromiumWebBrowser1_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
         {
-            var brow = (CefSharp.WinForms.ChromiumWebBrowser)sender;
-            var addr = brow.Address;
-            if(addr== "https://bean.m.jd.com/bean/signIndex.action")
-            {
-                GetCookies();
+            //var brow = (CefSharp.WinForms.ChromiumWebBrowser)sender;
+            //var addr = brow.Address;
+            //if(addr== "https://home.m.jd.com/myJd/home.action")
+            //{
+            //    GetCookies();
 
-            }
+            //}
              
         }
+        
+
         /// <summary>
         /// 获取cookie
         /// </summary>
@@ -285,5 +381,25 @@ namespace JD_Get
             Properties.Settings.Default.FormSize = this.Size;
             Properties.Settings.Default.Save();
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Auto = checkBox1.Checked;
+            ConfigHelp.SetSetting("Auto", checkBox1.Checked.ToString());
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            var form = new Form1();
+            form.Show();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            CompleteAP();
+        }
+ 
+
+       
     }
 }

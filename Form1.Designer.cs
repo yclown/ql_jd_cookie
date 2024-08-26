@@ -39,12 +39,17 @@ namespace JD_Get
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(287, 102);
+            this.button1.Location = new System.Drawing.Point(356, 111);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(98, 23);
             this.button1.TabIndex = 1;
@@ -60,22 +65,23 @@ namespace JD_Get
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chromiumWebBrowser1.Location = new System.Drawing.Point(12, 7);
             this.chromiumWebBrowser1.Name = "chromiumWebBrowser1";
-            this.chromiumWebBrowser1.Size = new System.Drawing.Size(392, 597);
+            this.chromiumWebBrowser1.Size = new System.Drawing.Size(470, 608);
             this.chromiumWebBrowser1.TabIndex = 2;
             this.chromiumWebBrowser1.LoadingStateChanged += new System.EventHandler<CefSharp.LoadingStateChangedEventArgs>(this.chromiumWebBrowser1_LoadingStateChanged);
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(6, 38);
+            this.textBox1.Location = new System.Drawing.Point(6, 65);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(379, 37);
+            this.textBox1.Size = new System.Drawing.Size(448, 37);
             this.textBox1.TabIndex = 3;
+        
             // 
             // button2
             // 
             this.button2.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.button2.Location = new System.Drawing.Point(287, 152);
+            this.button2.Location = new System.Drawing.Point(356, 152);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(98, 23);
             this.button2.TabIndex = 4;
@@ -90,12 +96,10 @@ namespace JD_Get
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(0, 12);
             this.label1.TabIndex = 5;
-            this.label1.Visible = false;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(6, 102);
+            this.button3.Location = new System.Drawing.Point(6, 111);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 6;
@@ -105,19 +109,21 @@ namespace JD_Get
             // 
             // comboBox1
             // 
+            this.comboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.comboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(75, 9);
+            this.comboBox1.Location = new System.Drawing.Point(84, 9);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(122, 20);
+            this.comboBox1.Size = new System.Drawing.Size(208, 20);
             this.comboBox1.TabIndex = 7;
-            this.comboBox1.Visible = false;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+         
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(315, 7);
+            this.button4.Location = new System.Drawing.Point(379, 36);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(70, 23);
+            this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 8;
             this.button4.Text = "青龙配置";
             this.button4.UseVisualStyleBackColor = true;
@@ -125,7 +131,7 @@ namespace JD_Get
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(215, 7);
+            this.button5.Location = new System.Drawing.Point(379, 7);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 9;
@@ -136,6 +142,11 @@ namespace JD_Get
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.textBox2);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.button7);
+            this.panel1.Controls.Add(this.button6);
+            this.panel1.Controls.Add(this.checkBox1);
             this.panel1.Controls.Add(this.textBox1);
             this.panel1.Controls.Add(this.button5);
             this.panel1.Controls.Add(this.button1);
@@ -144,20 +155,72 @@ namespace JD_Get
             this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.button3);
-            this.panel1.Location = new System.Drawing.Point(434, 21);
+            this.panel1.Location = new System.Drawing.Point(488, 21);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(388, 199);
+            this.panel1.Size = new System.Drawing.Size(463, 546);
             this.panel1.TabIndex = 10;
+          
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(15, 226);
+            this.textBox2.Multiline = true;
+            this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
+            this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox2.Size = new System.Drawing.Size(263, 308);
+            this.textBox2.TabIndex = 13;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 199);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "发送日志：\r\n";
+           
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(298, 7);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 12;
+            this.button7.Text = "快速填入";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(6, 152);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 11;
+            this.button6.Text = "多开";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(6, 11);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(72, 16);
+            this.checkBox1.TabIndex = 10;
+            this.checkBox1.Text = "自动登录";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(834, 616);
+            this.ClientSize = new System.Drawing.Size(963, 627);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.chromiumWebBrowser1);
             this.Name = "Form1";
-            this.Text = "青龙京东助手v2.3.1";
+            this.Text = "青龙京东助手";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
@@ -177,6 +240,11 @@ namespace JD_Get
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
 

@@ -66,11 +66,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account.cs">
+    <Compile Include="AccountForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Account.Designer.cs">
-      <DependentUpon>Account.cs</DependentUpon>
+    <Compile Include="AccountForm.Designer.cs">
+      <DependentUpon>AccountForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AccountHelp.cs" />
     <Compile Include="ConfigHelp.cs" />
@@ -90,8 +90,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QLHelp.cs" />
-    <EmbeddedResource Include="Account.resx">
-      <DependentUpon>Account.cs</DependentUpon>
+    <EmbeddedResource Include="AccountForm.resx">
+      <DependentUpon>AccountForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditQL.resx">
       <DependentUpon>EditQL.cs</DependentUpon>
@@ -160,6 +160,7 @@
   <ItemGroup>
     <Content Include=".gitignore" />
     <Content Include="preview\main.png" />
+    <Content Include="preview\ql.png" />
     <Content Include="ql青龙logo.ico" />
   </ItemGroup>
   <ItemGroup>
