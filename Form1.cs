@@ -62,31 +62,14 @@ namespace JD_Get
 
             #if DEBUG
                 this.label1.Text = "123";
-#endif
-            //this.chromiumWebBrowser1.AddressChanged += AddressChanged;
+            #endif
+          
         }
 
-        private void AddressChanged(object sender, AddressChangedEventArgs e)
-        {
-            var browser = (ChromiumWebBrowser)sender;
-            string currentAddress = browser.Address;
-            // 处理当前地址（currentAddress）  
-            //Console.WriteLine($"Page loaded: {currentAddress}");
-            //if (currentAddress.Contains("/login/login")&& Auto)
-            //{
-            //    string script = "";
-            //    script += $@"setTimeout(function() {{ 
-            //                    {GetLoginScript()} 
-            //            }},2000)";
-            //    //script += "alert(1);";
-            //   // script += "}";
-            //    this.chromiumWebBrowser1.ExecuteScriptAsyncWhenPageLoaded(script);
-            //}
-        }
 
         private void LoginInitAsync()
         { 
-            this.chromiumWebBrowser1.LoadUrl(LoginUrl);
+            this.chromiumWebBrowser1.LoadUrlAsync(LoginUrl);
 
             string script = "";
             script += $@"setTimeout(function() {{ 
@@ -282,8 +265,6 @@ namespace JD_Get
         {
             //CompleteAP();
             var select = (System.Windows.Forms.ComboBox)sender;
-
-
             if (this.checkBox1.Checked)
             {
                 if (select.SelectedIndex > 0)
@@ -398,8 +379,10 @@ namespace JD_Get
         {
             CompleteAP();
         }
- 
 
-       
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

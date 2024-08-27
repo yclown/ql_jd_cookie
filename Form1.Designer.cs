@@ -76,7 +76,6 @@ namespace JD_Get
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(448, 37);
             this.textBox1.TabIndex = 3;
-        
             // 
             // button2
             // 
@@ -117,7 +116,6 @@ namespace JD_Get
             this.comboBox1.Size = new System.Drawing.Size(208, 20);
             this.comboBox1.TabIndex = 7;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-         
             // 
             // button4
             // 
@@ -159,7 +157,7 @@ namespace JD_Get
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(463, 546);
             this.panel1.TabIndex = 10;
-          
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // textBox2
             // 
@@ -179,7 +177,6 @@ namespace JD_Get
             this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 11;
             this.label2.Text = "发送日志：\r\n";
-           
             // 
             // button7
             // 
