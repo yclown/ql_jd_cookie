@@ -108,6 +108,7 @@ namespace JD_Get
             }
             catch(Exception e)
             {
+                LogHelper.Error(e, "青龙错误");
                 statusCode = "";
                 return "";
             }
