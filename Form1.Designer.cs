@@ -44,6 +44,9 @@ namespace JD_Get
             this.button6 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
+            this.button8 = new System.Windows.Forms.Button();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.webView21)).BeginInit();
             this.SuspendLayout();
@@ -129,6 +132,9 @@ namespace JD_Get
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.textBox3);
+            this.panel1.Controls.Add(this.button8);
             this.panel1.Controls.Add(this.textBox2);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.button7);
@@ -142,19 +148,19 @@ namespace JD_Get
             this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.button3);
-            this.panel1.Location = new System.Drawing.Point(488, 21);
+            this.panel1.Location = new System.Drawing.Point(460, 5);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(463, 546);
+            this.panel1.Size = new System.Drawing.Size(525, 625);
             this.panel1.TabIndex = 10;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(15, 226);
+            this.textBox2.Location = new System.Drawing.Point(6, 226);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
             this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox2.Size = new System.Drawing.Size(263, 308);
+            this.textBox2.Size = new System.Drawing.Size(263, 361);
             this.textBox2.TabIndex = 13;
             // 
             // label2
@@ -207,15 +213,44 @@ namespace JD_Get
             this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
             this.webView21.Location = new System.Drawing.Point(12, 5);
             this.webView21.Name = "webView21";
-            this.webView21.Size = new System.Drawing.Size(470, 620);
+            this.webView21.Size = new System.Drawing.Size(442, 635);
             this.webView21.TabIndex = 11;
             this.webView21.ZoomFactor = 1D;
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(426, 194);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(93, 23);
+            this.button8.TabIndex = 14;
+            this.button8.Text = "获取失效账号";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(298, 226);
+            this.textBox3.Multiline = true;
+            this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
+            this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox3.Size = new System.Drawing.Size(221, 361);
+            this.textBox3.TabIndex = 15;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(296, 199);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 12);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "失效列表：\r\n";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(963, 627);
+            this.ClientSize = new System.Drawing.Size(997, 642);
             this.Controls.Add(this.webView21);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
@@ -245,6 +280,9 @@ namespace JD_Get
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox2;
         private Microsoft.Web.WebView2.WinForms.WebView2 webView21;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label3;
     }
 }
 
