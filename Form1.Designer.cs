@@ -38,22 +38,22 @@ namespace JD_Get
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.button8 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
-            this.button8 = new System.Windows.Forms.Button();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.webView21)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(356, 111);
+            this.button1.Location = new System.Drawing.Point(421, 111);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(98, 23);
             this.button1.TabIndex = 1;
@@ -66,13 +66,13 @@ namespace JD_Get
             this.textBox1.Location = new System.Drawing.Point(6, 65);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(448, 37);
+            this.textBox1.Size = new System.Drawing.Size(513, 37);
             this.textBox1.TabIndex = 3;
             // 
             // button2
             // 
             this.button2.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.button2.Location = new System.Drawing.Point(356, 152);
+            this.button2.Location = new System.Drawing.Point(421, 152);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(98, 23);
             this.button2.TabIndex = 4;
@@ -111,7 +111,7 @@ namespace JD_Get
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(379, 36);
+            this.button4.Location = new System.Drawing.Point(444, 36);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 8;
@@ -121,7 +121,7 @@ namespace JD_Get
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(379, 7);
+            this.button5.Location = new System.Drawing.Point(444, 7);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 9;
@@ -152,6 +152,35 @@ namespace JD_Get
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(525, 625);
             this.panel1.TabIndex = 10;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(273, 199);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 12);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "失效列表：\r\n";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(275, 226);
+            this.textBox3.Multiline = true;
+            this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
+            this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox3.Size = new System.Drawing.Size(244, 361);
+            this.textBox3.TabIndex = 15;
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(421, 194);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(98, 23);
+            this.button8.TabIndex = 14;
+            this.button8.Text = "获取失效账号";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // textBox2
             // 
@@ -216,35 +245,6 @@ namespace JD_Get
             this.webView21.Size = new System.Drawing.Size(442, 635);
             this.webView21.TabIndex = 11;
             this.webView21.ZoomFactor = 1D;
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(426, 194);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(93, 23);
-            this.button8.TabIndex = 14;
-            this.button8.Text = "获取失效账号";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(298, 226);
-            this.textBox3.Multiline = true;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox3.Size = new System.Drawing.Size(221, 361);
-            this.textBox3.TabIndex = 15;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(296, 199);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 12);
-            this.label3.TabIndex = 16;
-            this.label3.Text = "失效列表：\r\n";
             // 
             // Form1
             // 
