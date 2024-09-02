@@ -225,5 +225,28 @@ namespace JD_Get
             return jsonObj["code"].ToString();
         }
 
+
+        public class EnvItem
+        {
+            public int id { set; get; }
+            public string name { set; get; }
+            public string remarks { set; get; }
+            public int status { set; get; }
+            public string value { set; get; }
+        }
+        public List<EnvItem> GetAllJDCookieEnvs()
+        {
+            string code = "";
+            var responseData = GetResponse($"/open/envs?searchValue=JD_COOKIE",
+                out code);
+            JObject jsonObj = JObject.Parse(responseData);
+            if (jsonObj["data"].Count() == 0)
+            {
+                return new List<EnvItem>();
+            }
+            return jsonObj["data"].ToObject<List<EnvItem>>();
+
+
+        }
     }
 }
