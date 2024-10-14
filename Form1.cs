@@ -18,7 +18,7 @@ namespace JD_Get
 {
     public partial class Form1 : Form
     {
-        
+
 
         public QLHelp ql { set; get; }
         public List<string> needCookieName { set; get; }
@@ -30,15 +30,15 @@ namespace JD_Get
         {
             InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
-            GetQLConfig(); 
+            GetQLConfig();
 
         }
 
 
         public void GetQLConfig()
         {
-            ql = new QLHelp( );
-            
+            ql = new QLHelp();
+
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -52,15 +52,15 @@ namespace JD_Get
             webView21.Source = new Uri(LoginUrl);
             LoginInitAsync();
             InitAccount();
-         
+
             this.Location = Properties.Settings.Default.FormLocation;
             this.Size = Properties.Settings.Default.FormSize;
             this.Text = this.Text + "V" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-            #if DEBUG
+#if DEBUG
             this.label1.Text = "123";
-            #endif
-            
+#endif
+
             webView21.NavigationCompleted += NavigationCompleted;
             webView21.SourceChanged += SourceChanged;
         }
@@ -73,9 +73,10 @@ namespace JD_Get
 
         private void NavigationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs e)
         {
-            var web= (Microsoft.Web.WebView2.WinForms.WebView2)sender;
+            var web = (Microsoft.Web.WebView2.WinForms.WebView2)sender;
 
-            if(web.Source.AbsoluteUri.Contains("nopasswordcu")){
+            if (web.Source.AbsoluteUri.Contains("nopasswordcu"))
+            {
                 if (Auto)
                 {
                     string script = "";
@@ -85,11 +86,11 @@ namespace JD_Get
                     web.ExecuteScriptAsync(script);
                 }
             }
-            else if(web.Source.AbsoluteUri.Contains("myJd/home.action"))
+            else if (web.Source.AbsoluteUri.Contains("myJd/home.action"))
             {
                 GetCookiesAsync();
             }
-           
+
         }
 
 
@@ -104,7 +105,7 @@ namespace JD_Get
 
 
         }
-       
+
         /// <summary>
         /// 获取cookie
         /// </summary>
@@ -114,7 +115,7 @@ namespace JD_Get
         {
 
             GetCookiesAsync();
-            
+
         }
 
         /// <summary>
@@ -122,10 +123,10 @@ namespace JD_Get
         /// 因为是异步获取所以采用追加到文本框的方式
         /// </summary>
         /// <param name="cookie"></param>
-        
 
-      
-       
+
+
+
         private void button2_Click(object sender, EventArgs e)
         {
             string pt_pin = this.label1.Text;
@@ -134,7 +135,7 @@ namespace JD_Get
                 MessageBox.Show("青龙面板配置不完整，点击青龙配置按钮，输入完成参数");
                 return;
             }
-            
+
             if (string.IsNullOrEmpty(pt_pin))
             {
                 MessageBox.Show("未获取到cookie 请先登录后点击获取Cookies按钮");
@@ -150,8 +151,8 @@ namespace JD_Get
                 }
             }
 
-            var res= Send(pt_pin, value); 
-            this.textBox2.Text += ( res+ "\r\n" );
+            var res = Send(pt_pin, value);
+            this.textBox2.Text += (res + "\r\n");
         }
         /// <summary>
         /// 发送cookies到青龙
@@ -166,11 +167,11 @@ namespace JD_Get
                 {
                     ql.Login();
                 }
-               
+                key = ExistJDCookieCombine(pin, key);
                 string id = ql.GetEnvs(pin);
                 if (string.IsNullOrEmpty(id))
                 {
-                    ql.AddEnvs(pin,key);
+                    ql.AddEnvs(pin, key);
                 }
                 else
                 {
@@ -178,23 +179,59 @@ namespace JD_Get
                     ql.EnableEnvs(new List<string>() { id });
                 }
                 MessageBox.Show("发送成功");
-                return $"[{DateTime.Now.ToString("HH:mm:ss")}] pt_pin为{ pin }发送成功";
+                return $"[{DateTime.Now.ToString("HH:mm:ss")}] pt_pin为{pin}发送成功";
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ql.Token = "";
-                LogHelper.Error(e,"发送日志：");
-                MessageBox.Show("发送失败："+e.Message);
+                LogHelper.Error(e, "发送日志：");
+                MessageBox.Show("发送失败：" + e.Message);
                 //return "pin为" + pin + "发送失败 失败原因"+ e.Message;
-                return $"[{DateTime.Now.ToString("HH:mm:ss")}] pt_pin为{ pin }发送失败 请查看日志";
+                return $"[{DateTime.Now.ToString("HH:mm:ss")}] pt_pin为{pin}发送失败 请查看日志";
             }
-          
-           
+
+
+        }
+
+        /// <summary>
+        /// 合并青龙中已存在的ck
+        /// 如果存在就替换，不存在就新增
+        /// </summary>
+        /// <param name="pin"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        private string ExistJDCookieCombine(string pin, string key)
+        {
+            var existData = ql.GetAllJDCookieEnvs();
+            if (existData.Count > 0 && !string.IsNullOrWhiteSpace(existData[0].value))
+            {
+                string value = existData[0].value;
+                string pt_pin = "pt_pin=" + pin;
+                if (value.Contains(pt_pin))
+                {
+                    var list = new List<string>();
+                    var pts = existData[0].value.Split('&');
+                    foreach (var item in pts)
+                    {
+                        if (item.Contains(pt_pin))
+                            list.Add(key);
+                        else
+                            list.Add(item);
+                    }
+                    value = string.Join("&", list);
+                }
+                else
+                {
+                    value += '&' + key;
+                }
+                return value;
+            }
+            return key;
         }
 
         private void ClearCookie()
         {
-             
+
             webView21.CoreWebView2.Profile.ClearBrowsingDataAsync();
         }
 
@@ -221,18 +258,18 @@ namespace JD_Get
                     this.textBox1.Text = "";
                     this.label1.Text = "";
                 }
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-           
+
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            EditQL popup = new EditQL(this); 
+            EditQL popup = new EditQL(this);
             popup.StartPosition = FormStartPosition.CenterParent;
             popup.ShowDialog(this);
         }
@@ -245,12 +282,12 @@ namespace JD_Get
         }
         List<AccountHelp.Account> accounts = new List<AccountHelp.Account>();
         public void InitAccount()
-        { 
-            accounts= AccountHelp.GetAccounts();
+        {
+            accounts = AccountHelp.GetAccounts();
             //comboBox1.DisplayMember = "Login";
             //comboBox1.ValueMember = "Login"; 
             // 将整个列表绑定到ComboBox的DataSource
-             
+
             comboBox1.DataSource = accounts;
             //comboBox1.SelectedIndex = -1;
 
@@ -280,11 +317,12 @@ namespace JD_Get
 
         }
 
-      
-        public void CompleteAP() {
+
+        public void CompleteAP()
+        {
             var LoginScript = GetLoginScript();
             if (!string.IsNullOrEmpty(LoginScript))
-            { 
+            {
                 try
                 {
                     this.webView21.ExecuteScriptAsync(LoginScript);
@@ -293,7 +331,7 @@ namespace JD_Get
                 {
                     LogHelper.Error(ex, "自动输入账号");
                 }
-            } 
+            }
         }
 
         public string GetLoginScript()
@@ -304,7 +342,7 @@ namespace JD_Get
                 String execJs = "(function() {";
                 execJs += "if(!document.getElementsByClassName('policy_tip-checkbox')[0].checked) { document.getElementsByClassName('policy_tip-checkbox')[0].click(); }";
                 execJs += "if(document.getElementById('username').closest('div').style.display=='none'){ document.getElementsByClassName('planBLogin')[0].click(); }";
-                
+
                 execJs += "var account='" + account.Login + "';";
                 execJs += "var password='" + account.Password + "';";
                 execJs += "var evt=new InputEvent('input',{inputType:'insertText',data:account,dataTransfer:null,isComposing:false});";
@@ -322,7 +360,7 @@ namespace JD_Get
             }
             return "";
         }
-   
+
 
 
         /// <summary>
@@ -331,14 +369,14 @@ namespace JD_Get
         private async Task GetCookiesAsync()
         {
             this.textBox1.Text = "";
-            this.label1.Text = "";  
+            this.label1.Text = "";
 
-            var cookieManager = webView21.CoreWebView2.CookieManager; 
-            var cookiesCollection =await cookieManager.
+            var cookieManager = webView21.CoreWebView2.CookieManager;
+            var cookiesCollection = await cookieManager.
                 GetCookiesAsync(webView21.Source.AbsoluteUri);
 
             foreach (var cookie in cookiesCollection)
-            { 
+            {
                 if (cookie.Name == "pt_key" || cookie.Name == "pt_pin")
                 {
                     this.textBox1.Text += $"{cookie.Name}={cookie.Value};";
@@ -355,7 +393,7 @@ namespace JD_Get
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        { 
+        {
             Properties.Settings.Default.FormLocation = this.Location;
             Properties.Settings.Default.FormSize = this.Size;
             Properties.Settings.Default.Save();
@@ -384,7 +422,7 @@ namespace JD_Get
             {
                 ql.Login();
             }
-            var all= ql.GetAllJDCookieEnvs();
+            var all = ql.GetAllJDCookieEnvs();
             string pattern = @"from_jdget=(.+);";
 
             List<string> allDisable = new List<string>();
@@ -394,7 +432,7 @@ namespace JD_Get
                 Match match = Regex.Match(item.value, pattern);
                 if (match.Success)
                 {
-                    allDisable.Add("账号："+ match.Groups[1]);
+                    allDisable.Add("账号：" + match.Groups[1]);
                 }
                 else
                 {
