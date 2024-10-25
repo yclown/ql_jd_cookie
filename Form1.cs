@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Policy;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
@@ -150,8 +151,18 @@ namespace JD_Get
                 MessageBox.Show("未获取到cookie 请先登录后点击获取Cookies按钮");
                 return;
             }
-            var res= Send(pt_pin, this.textBox1.Text); 
-            this.textBox2.Text += ( res+ "\r\n" );
+
+            string value = this.textBox1.Text;
+            if (comboBox1.SelectedItem != null)
+            {
+                var selected = (AccountHelp.Account)comboBox1.SelectedItem;
+                if (selected.Login != null)
+                {
+                    value += $";from_jdget={selected.Login};";
+                }
+            }
+            var res = Send(pt_pin, value);
+            this.textBox2.Text += (res + "\r\n");
         }
         /// <summary>
         /// 发送cookies到青龙
@@ -390,6 +401,32 @@ namespace JD_Get
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(ql.Token))
+            {
+                ql.Login();
+            }
+            var all = ql.GetAllJDCookieEnvs();
+            string pattern = @"from_jdget=(.+);";
+
+            List<string> allDisable = new List<string>();
+            foreach (var item in all.Where(n => n.status == 1))
+            {
+                //item.value.re
+                Match match = Regex.Match(item.value, pattern);
+                if (match.Success)
+                {
+                    allDisable.Add("账号：" + match.Groups[1]);
+                }
+                else
+                {
+                    allDisable.Add("cookie：" + item.value);
+                }
+            }
+            textBox3.Text = string.Join("\r\n\r\n", allDisable);
         }
     }
 }
