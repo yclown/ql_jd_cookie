@@ -357,9 +357,16 @@ namespace JD_Get
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        { 
-            Properties.Settings.Default.FormLocation = this.Location;
-            Properties.Settings.Default.FormSize = this.Size;
+        {
+            if (this.Location.X > 0 && this.Location.Y > 0)
+            {
+                Properties.Settings.Default.FormLocation = this.Location;
+            }
+            if (this.Size.Width > 0 && this.Size.Height > 0)
+            {
+                Properties.Settings.Default.FormSize = this.Size;
+            }
+
             Properties.Settings.Default.Save();
         }
 
