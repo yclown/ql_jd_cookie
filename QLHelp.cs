@@ -19,6 +19,7 @@ namespace JD_Get
         public string ClientSecret { get; set; }
         public string Url { get; set; }
         public string Token { get; set; }
+        public string id_name { get; set; } = "id";
 
         public QLHelp(string url, string clientID, string clientSecret)
         {
@@ -29,7 +30,7 @@ namespace JD_Get
         }
         public QLHelp()
         {
-            Url = ConfigHelp.GetConfig("QL_URL"); 
+            Url = ConfigHelp.GetConfig("QL_URL");
             ClientID = ConfigHelp.GetConfig("QL_ClientID");
             ClientSecret = ConfigHelp.GetConfig("QL_ClientSecret");
             Token = "";
@@ -37,7 +38,7 @@ namespace JD_Get
 
         public string GetResponse(string url, out string statusCode)
         {
-            
+
 
             var options = new RestClientOptions(Url);
 
@@ -46,11 +47,12 @@ namespace JD_Get
 
             var client = new RestClient(options);
             var request = new RestRequest(url);
-            if (!string.IsNullOrEmpty(Token)) {
+            if (!string.IsNullOrEmpty(Token))
+            {
                 //request.Authenticator = new HttpBasicAuthenticator(Token.Split(' ')[0], Token.Split(' ')[1]);
                 request.AddOrUpdateHeader("Authorization", Token);
             }
-             
+
 
             // The cancellation token comes from the caller. You can still make a call without it.
             var response = client.Get(request);
@@ -61,21 +63,21 @@ namespace JD_Get
         {
 
 
-            var options = new RestClientOptions(Url); 
+            var options = new RestClientOptions(Url);
 
             var client = new RestClient(options);
-            var request = new RestRequest(url); 
+            var request = new RestRequest(url);
             // The cancellation token comes from the caller. You can still make a call without it.
             var response = client.Get(request);
             statusCode = response.StatusCode.ToString();
             return response.Content;
         }
 
-        public string PutResponse(string url,  string postData, out string statusCode)
+        public string PutResponse(string url, string postData, out string statusCode)
         {
             var options = new RestClientOptions(Url);
 
-            
+
             var client = new RestClient(options);
             var request = new RestRequest(url);
             request.AddStringBody(postData, ContentType.Json);
@@ -90,14 +92,14 @@ namespace JD_Get
         }
         public string PostResponse(string url, string postData, out string statusCode)
         {
-            var options = new RestClientOptions(Url); 
+            var options = new RestClientOptions(Url);
 
             var client = new RestClient(options);
             var request = new RestRequest(url);
             //request.AddStringBody(postData, ContentType.Json);
             request.AddStringBody(postData, ContentType.Json);
             if (!string.IsNullOrEmpty(Token))
-            { 
+            {
                 request.AddOrUpdateHeader("Authorization", Token);
             }
             try
@@ -106,16 +108,15 @@ namespace JD_Get
                 statusCode = response.StatusCode.ToString();
                 return response.Content;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                LogHelper.Error(e, "青龙错误");
                 statusCode = "";
                 return "";
             }
-          
+
         }
 
-        public  string Login()
+        public string Login()
         {
             string code = "";
             try
@@ -123,19 +124,21 @@ namespace JD_Get
                 var responseData = GetLoginResponse($"/open/auth/token?client_id={ClientID}&client_secret={ClientSecret}", out code);
                 JObject jsonObj = JObject.Parse(responseData);
 
-               
-                if(jsonObj["code"].ToString() != "200")
+
+                if (jsonObj["code"].ToString() != "200")
                 {
                     throw new Exception(jsonObj["message"].ToString());
                 }
-                
+
                 this.Token = jsonObj["data"]["token_type"].ToString() + " " + jsonObj["data"]["token"].ToString();
                 return this.Token;
 
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 throw e;
             }
-          
+
         }
 
         /// <summary>
@@ -148,34 +151,51 @@ namespace JD_Get
             string code = "";
             var responseData = GetResponse($"/open/envs?searchValue={searchValue}",
                 out code);
+            LogHelper.Info("环境变量：" + searchValue + "返回：" + responseData);
             JObject jsonObj = JObject.Parse(responseData);
             if (jsonObj["data"].Count() == 0)
             {
                 return "";
             }
-            return jsonObj["data"][0]["id"].ToString();
-        }  
+            if (jsonObj["data"][0]["id"] != null)
+            {
+                return jsonObj["data"][0]["id"].ToString();
+            }
+            else if (jsonObj["data"][0]["_id"] != null)
+            {
+                id_name = "_id";
+                return jsonObj["data"][0]["_id"].ToString();
+
+            }
+            else
+            {
+                throw new Exception("非涵盖的青龙版本，请联系作者");
+            }
+            //return jsonObj["data"][0]["id"].ToString();
+        }
         /// <summary>
         /// 更新环境变量
         /// </summary>
         /// <param name="id"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public string UpdateEnvs(string id,string value,string remarks="")
+        public string UpdateEnvs(string id, string value, string remarks = "")
         {
             string code = "";
             JObject patientinfo = new JObject();
-            patientinfo["id"] = id;
+            //patientinfo["id"] = id;
+            patientinfo[id_name] = id;
             patientinfo["value"] = value;
             patientinfo["name"] = "JD_COOKIE";
-            if (!string.IsNullOrEmpty(remarks)) {
+            if (!string.IsNullOrEmpty(remarks))
+            {
                 patientinfo["remarks"] = remarks;
-            } 
+            }
             string postdata = JsonConvert.SerializeObject(patientinfo);
-            
+
             var responseData = PutResponse($"/open/envs", postdata,
                 out code);
-           
+            LogHelper.Info("更新环境变量：" + id + "返回：" + responseData);
 
             JObject jsonObj = JObject.Parse(responseData);
             //this.Token = jsonObj["code"]["token_type"].ToString() + " " + jsonObj["data"]["token"].ToString();
@@ -189,7 +209,7 @@ namespace JD_Get
         /// <returns></returns>
         public string AddEnvs(string remarks, string value)
         {
-            string code = ""; 
+            string code = "";
             var requestData = new[]
             {
                 new
@@ -203,7 +223,7 @@ namespace JD_Get
             var responseData = PostResponse($"/open/envs", postdata,
                 out code);
 
-
+            LogHelper.Info("添加环境变量 返回：" + responseData);
             JObject jsonObj = JObject.Parse(responseData);
             //this.Token = jsonObj["code"]["token_type"].ToString() + " " + jsonObj["data"]["token"].ToString();
             return jsonObj["code"].ToString();
@@ -218,17 +238,18 @@ namespace JD_Get
         {
             string code = "";
 
-            string postdata= JsonConvert.SerializeObject(ids);
+            string postdata = JsonConvert.SerializeObject(ids);
             var responseData = PutResponse($"/open/envs/enable", postdata,
                 out code);
-            JObject jsonObj = JObject.Parse(responseData); 
+            LogHelper.Info("启用环境变量 返回：" + responseData);
+            JObject jsonObj = JObject.Parse(responseData);
             return jsonObj["code"].ToString();
         }
 
-
         public class EnvItem
         {
-            public int id { set; get; }
+            public string id { set; get; }
+            public string _id { set; get; }
             public string name { set; get; }
             public string remarks { set; get; }
             public int status { set; get; }
