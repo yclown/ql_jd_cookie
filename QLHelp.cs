@@ -19,6 +19,7 @@ namespace JD_Get
         public string ClientSecret { get; set; }
         public string Url { get; set; }
         public string Token { get; set; }
+        public string id_name { get; set; }="id";
 
         public QLHelp(string url, string clientID, string clientSecret)
         {
@@ -159,7 +160,9 @@ namespace JD_Get
             }
             else if(jsonObj["data"][0]["_id"] != null)
             {
+                id_name = "_id";
                 return jsonObj["data"][0]["_id"].ToString();
+                
             }
             else
             {
@@ -177,7 +180,8 @@ namespace JD_Get
         {
             string code = "";
             JObject patientinfo = new JObject();
-            patientinfo["id"] = id;
+            //patientinfo["id"] = id;
+            patientinfo[id_name] = id;
             patientinfo["value"] = value;
             patientinfo["name"] = "JD_COOKIE";
             if (!string.IsNullOrEmpty(remarks)) {
@@ -240,7 +244,8 @@ namespace JD_Get
 
         public class EnvItem
         {
-            public int id { set; get; }
+            public string id { set; get; }
+            public string _id { set; get; }
             public string name { set; get; }
             public string remarks { set; get; }
             public int status { set; get; }
