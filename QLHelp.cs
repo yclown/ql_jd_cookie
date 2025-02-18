@@ -147,6 +147,7 @@ namespace JD_Get
             string code = "";
             var responseData = GetResponse($"/open/envs?searchValue={searchValue}",
                 out code);
+            LogHelper.Info("环境变量："+ searchValue+"返回："+ responseData);
             JObject jsonObj = JObject.Parse(responseData);
             if (jsonObj["data"].Count() == 0)
             {
@@ -174,7 +175,7 @@ namespace JD_Get
             
             var responseData = PutResponse($"/open/envs", postdata,
                 out code);
-           
+            LogHelper.Info("更新环境变量：" + id + "返回：" + responseData);
 
             JObject jsonObj = JObject.Parse(responseData);
             //this.Token = jsonObj["code"]["token_type"].ToString() + " " + jsonObj["data"]["token"].ToString();
@@ -202,7 +203,7 @@ namespace JD_Get
             var responseData = PostResponse($"/open/envs", postdata,
                 out code);
 
-
+            LogHelper.Info("添加环境变量 返回：" + responseData);
             JObject jsonObj = JObject.Parse(responseData);
             //this.Token = jsonObj["code"]["token_type"].ToString() + " " + jsonObj["data"]["token"].ToString();
             return jsonObj["code"].ToString();
@@ -220,6 +221,7 @@ namespace JD_Get
             string postdata= JsonConvert.SerializeObject(ids);
             var responseData = PutResponse($"/open/envs/enable", postdata,
                 out code);
+            LogHelper.Info("启用环境变量 返回：" + responseData);
             JObject jsonObj = JObject.Parse(responseData); 
             return jsonObj["code"].ToString();
         }
