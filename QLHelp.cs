@@ -153,7 +153,19 @@ namespace JD_Get
             {
                 return "";
             }
-            return jsonObj["data"][0]["id"].ToString();
+            if (jsonObj["data"][0]["id"] != null)
+            {
+                return jsonObj["data"][0]["id"].ToString();
+            }
+            else if(jsonObj["data"][0]["_id"] != null)
+            {
+                return jsonObj["data"][0]["_id"].ToString();
+            }
+            else
+            {
+                throw new Exception("非涵盖的青龙版本，请联系作者");
+            }
+            //return jsonObj["data"][0]["id"].ToString();
         }  
         /// <summary>
         /// 更新环境变量
