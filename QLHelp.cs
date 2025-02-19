@@ -176,14 +176,14 @@ namespace JD_Get
         /// <param name="id"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public string UpdateEnvs(string id,string value,string remarks="")
+        public string UpdateEnvs(string id,string value,string remarks="",string name="JD_COOKIE")
         {
             string code = "";
             JObject patientinfo = new JObject();
             //patientinfo["id"] = id;
             patientinfo[id_name] = id;
             patientinfo["value"] = value;
-            patientinfo["name"] = "JD_COOKIE";
+            patientinfo["name"] = name;
             if (!string.IsNullOrEmpty(remarks)) {
                 patientinfo["remarks"] = remarks;
             } 
@@ -203,7 +203,7 @@ namespace JD_Get
         /// <param name="remarks"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public string AddEnvs(string remarks, string value)
+        public string AddEnvs(string remarks, string value,string name= "JD_COOKIE")
         {
             string code = ""; 
             var requestData = new[]
@@ -211,7 +211,7 @@ namespace JD_Get
                 new
                 {
                     value = value,
-                    name = "JD_COOKIE",
+                    name = name,
                     remarks=remarks
                 }
             };
