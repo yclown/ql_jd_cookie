@@ -40,6 +40,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // QL_URL
@@ -101,9 +103,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(240, 267);
+            this.button1.Location = new System.Drawing.Point(224, 267);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(91, 23);
             this.button1.TabIndex = 7;
             this.button1.Text = "保存";
             this.button1.UseVisualStyleBackColor = true;
@@ -131,20 +133,42 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(240, 133);
+            this.button2.Location = new System.Drawing.Point(224, 138);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(45, 23);
             this.button2.TabIndex = 11;
-            this.button2.Text = "测试";
+            this.button2.Text = "登录";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(224, 181);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(45, 23);
+            this.button3.TabIndex = 12;
+            this.button3.Text = "新增";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(280, 181);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(43, 23);
+            this.button4.TabIndex = 13;
+            this.button4.Text = "更新";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // EditQL
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(362, 329);
+            this.ClientSize = new System.Drawing.Size(336, 315);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -178,5 +202,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
     }
 }

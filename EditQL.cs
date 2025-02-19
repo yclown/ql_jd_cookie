@@ -66,5 +66,49 @@ namespace JD_Get
             }
              
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var testQL = new QLHelp()
+            {
+                ClientID = QL_ClientID.Text,
+                ClientSecret = QL_ClientSecret.Text,
+                Url = QL_URL.Text,
+
+            };
+            try
+            {
+                testQL.Login();
+                testQL.AddEnvs("来自工具的测试", "https://github.com/yclown/", "ToolTest");
+                MessageBox.Show("测试通过");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var testQL = new QLHelp()
+            {
+                ClientID = QL_ClientID.Text,
+                ClientSecret = QL_ClientSecret.Text,
+                Url = QL_URL.Text,
+
+            };
+            try
+            {
+                testQL.Login();
+                string id = testQL.GetEnvs("ToolTest");
+                testQL.UpdateEnvs(id, "https://github.com/yclown/", "更新成功");
+                MessageBox.Show("测试通过");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
