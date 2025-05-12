@@ -178,7 +178,7 @@ namespace JD_Get
                     ql.Login();
                 }
                
-                string id = ql.GetEnvs(pin);
+                string id = ql.GetEnvs("pt_pin=" + pin);
                 if (string.IsNullOrEmpty(id))
                 {
                     ql.AddEnvs(pin,key);
