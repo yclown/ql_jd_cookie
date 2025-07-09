@@ -151,7 +151,7 @@ namespace JD_Get
             string code = "";
             var responseData = GetResponse($"/open/envs?searchValue={searchValue}",
                 out code);
-            LogHelper.Info("环境变量：" + searchValue + "返回：" + responseData);
+            LogHelper.Info("获取环境变量：" + searchValue + "返回：" + responseData);
             JObject jsonObj = JObject.Parse(responseData);
             if (jsonObj["data"].Count() == 0)
             {
