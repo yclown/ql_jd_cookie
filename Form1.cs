@@ -128,7 +128,7 @@ namespace JD_Get
        
         private void button2_Click(object sender, EventArgs e)
         {
-           string pt_pin = this.label1.Text;
+            string pt_pin = this.label1.Text;
             if (string.IsNullOrEmpty(ql.ClientSecret) || string.IsNullOrEmpty(ql.ClientID) || string.IsNullOrEmpty(ql.Url))
             {
                 MessageBox.Show("青龙面板配置不完整，点击青龙配置按钮，输入完成参数");
