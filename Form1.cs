@@ -23,7 +23,7 @@ namespace JD_Get
         public QLHelp ql { set; get; }
         public List<string> needCookieName { set; get; }
         //https://bean.m.jd.com/bean/signIndex.action
-        public string LoginUrl = "https://home.m.jd.com/myJd/home.action";
+        public string LoginUrl = ConfigHelp.GetConfig("LoginUri");
 
         public bool Auto = false;
         public Form1()
