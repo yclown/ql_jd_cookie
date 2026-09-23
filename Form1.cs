@@ -24,16 +24,41 @@ namespace JD_Get
         public List<string> needCookieName { set; get; }
         //https://bean.m.jd.com/bean/signIndex.action
         public string LoginUrl = ConfigHelp.GetConfig("LoginUri");
+        public List<string> needCookies { set; get; }
 
         public bool Auto = false;
         public Form1()
         {
             InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
+            InitConfig();
             GetQLConfig(); 
 
         }
+        public void InitConfig()
+        {
+            try
+            {
+                var nc = ConfigHelp.GetConfig("needCookies");
+                if (string.IsNullOrEmpty(nc))
+                {
+                    needCookies = new List<string>() { "pt_pin", "pt_key" };
+                    ConfigHelp.SetSetting("needCookies", string.Join(",", needCookies));
+                }
+                else
+                {
+                    needCookies = nc.Split(',').ToList();
+                }
+            }
+            catch(Exception e)
+            {
+                LogHelper.Error(e);
+                needCookies = new List<string>() { "pt_pin", "pt_key" };
+                ConfigHelp.SetSetting("needCookies", string.Join(",", needCookies));
+            }
+           
 
+        }
 
         public void GetQLConfig()
         {
@@ -347,7 +372,7 @@ namespace JD_Get
 
             foreach (var cookie in cookiesCollection)
             { 
-                if (cookie.Name == "pt_key" || cookie.Name == "pt_pin")
+                if (needCookies.Contains(cookie.Name))
                 {
                     this.textBox1.Text += $"{cookie.Name}={cookie.Value};";
                 }
